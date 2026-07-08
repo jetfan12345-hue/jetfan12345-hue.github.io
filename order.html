@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order — SunLine X1™</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="marquee"><span>☀️ SECURE CHECKOUT* • *NOT ACTUALLY SECURE • *NOT ACTUALLY CHECKOUT • PRACTICE WEBSITE ☀️</span></div>
+
+  <nav class="nav">
+    <a class="logo" href="index.html">☀️ SunLine</a>
+    <div class="links">
+      <a href="index.html">Product</a>
+      <a href="about.html">Our Mission</a>
+      <a href="order.html" class="active btn-nav">Order Now</a>
+    </div>
+  </nav>
+
+  <main class="page order-page">
+    <h1>Complete Your Order</h1>
+    <p class="lead">You're one click away from revolutionizing laundry. And receiving cardboard.</p>
+
+    <div class="order-layout">
+      <section class="card order-summary">
+        <img src="images/solar-dryer-hero.jpg" alt="SunLine X1" class="order-thumb" />
+        <h2>SunLine X1™ Solar Dryer</h2>
+        <ul class="order-details">
+          <li>100% solar powered (sun required)</li>
+          <li>Includes string + spool</li>
+          <li>Cardboard chassis in "Natural Kraft" finish</li>
+        </ul>
+        <div class="order-total">
+          <span>Total</span>
+          <strong>$299.00</strong>
+        </div>
+        <p class="fine">Shipping: Free (we'll just leave it on your porch)</p>
+      </section>
+
+      <form class="card order-form" onsubmit="return handleOrder(event)">
+        <h2>Shipping Info</h2>
+        <label>Full Name <input type="text" placeholder="Don Eco-conscious" required /></label>
+        <label>Email <input type="email" placeholder="you@email.com" required /></label>
+        <label>Address <input type="text" placeholder="123 Solar Lane" required /></label>
+        <label>City / State / ZIP
+          <div class="row-3">
+            <input type="text" placeholder="City" required />
+            <input type="text" placeholder="ST" required />
+            <input type="text" placeholder="ZIP" required />
+          </div>
+        </label>
+
+        <h2>Payment</h2>
+        <label>Card Number <input type="text" placeholder="0000 0000 0000 0000" required /></label>
+        <div class="row-2">
+          <label>Expiry <input type="text" placeholder="MM/YY" required /></label>
+          <label>CVV <input type="text" placeholder="123" required /></label>
+        </div>
+
+        <label class="checkbox">
+          <input type="checkbox" required />
+          I understand I am ordering cardboard and string, and I am okay with that.
+        </label>
+
+        <button class="btn primary large full" type="submit">Place Order — $299</button>
+        <p id="order-msg" class="form-msg" hidden>
+          ✅ Order placed! Your SunLine X1™ (cardboard edition) will ship when the sun is out.
+          No money was charged. This is a practice website.
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> SunLine Technologies™ · <a href="index.html">← Back to product</a></p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
