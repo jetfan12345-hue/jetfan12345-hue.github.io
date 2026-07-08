@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Don</title>
+  <meta name="description" content="Personal site" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Welcome</p>
+      <h1>Don</h1>
+      <p class="lead">
+        Personal site — trading, projects, and notes.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:jetfan12345@gmail.com">Email me</a>
+        <a class="btn" href="https://github.com/jetfan12345-hue" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>About</h2>
+      <p>
+        This site is hosted free on GitHub Pages. Edit
+        <code>index.html</code> and push to update it live.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Projects</h2>
+      <ul class="list">
+        <li><strong>Execution Trading</strong> — Qullamaggie + Stockbee agentic system</li>
+        <li><strong>More coming</strong> — add your projects here</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© <span id="year"></span> Don · Built with GitHub Pages</p>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
