@@ -3,46 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Don</title>
-  <meta name="description" content="Personal site" />
+  <title>DonCorp™ — Official Website (Practice Edition)</title>
+  <meta name="description" content="A completely serious website. Definitely not a joke." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="marquee"><span>⚠️ NOT FINANCIAL ADVICE • NOT MEDICAL ADVICE • NOT EVEN GOOD ADVICE • PRACTICE WEBSITE • DO NOT TAKE SERIOUSLY ⚠️</span></div>
+
+  <nav class="nav">
+    <a class="logo" href="index.html">DonCorp™</a>
+    <div class="links">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
   <main class="page">
     <header class="hero">
-      <p class="eyebrow">Welcome</p>
-      <h1>Don</h1>
+      <p class="badge">Est. 2026 • Vibe-Checked • LLC (Loosely)</p>
+      <h1>We Turn <span class="glow">Vibes</span> Into <span class="glow">Spreadsheets</span></h1>
       <p class="lead">
-        Personal site — trading, projects, and notes.
+        DonCorp is a premium lifestyle brand for people who own at least one hoodie
+        and have strong opinions about candlestick charts.
       </p>
       <div class="actions">
-        <a class="btn primary" href="mailto:jetfan12345@gmail.com">Email me</a>
-        <a class="btn" href="https://github.com/jetfan12345-hue" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn primary" href="services.html">See Our Services</a>
+        <a class="btn" href="about.html">Meet Don</a>
       </div>
     </header>
 
-    <section class="card">
-      <h2>About</h2>
-      <p>
-        This site is hosted free on GitHub Pages. Edit
-        <code>index.html</code> and push to update it live.
-      </p>
+    <section class="stats">
+      <div class="stat"><strong>∞</strong><span>Confidence</span></div>
+      <div class="stat"><strong>3</strong><span>Monitor Setup</span></div>
+      <div class="stat"><strong>0</strong><span>Guarantees</span></div>
+      <div class="stat"><strong>100%</strong><span>Practice</span></div>
+    </section>
+
+    <section class="card grid-2">
+      <div>
+        <h2>What We Do</h2>
+        <p>
+          DonCorp delivers enterprise-grade solutions for problems we invented
+          approximately eleven minutes ago. Our flagship product is
+          <em>looking like you know what you're doing</em>.
+        </p>
+      </div>
+      <div class="quote-box">
+        <p>"This website changed my portfolio from red to a slightly different shade of red."</p>
+        <cite>— Anonymous Trader, probably</cite>
+      </div>
     </section>
 
     <section class="card">
-      <h2>Projects</h2>
-      <ul class="list">
-        <li><strong>Execution Trading</strong> — Qullamaggie + Stockbee agentic system</li>
-        <li><strong>More coming</strong> — add your projects here</li>
+      <h2>Recent Press</h2>
+      <ul class="press">
+        <li>🗞️ <em>Journal of Vibes</em> — "DonCorp: Bold Vision, Unclear Deliverables"</li>
+        <li>📺 <em>Cable News at 3AM</em> — "Local Man Launches Website, Immediately Checks It Twice"</li>
+        <li>🎙️ <em>Podcast Your Uncle Won't Stop Recommending</em> — "Is This a Real Company? (No)"</li>
       </ul>
     </section>
 
-    <footer>
-      <p>© <span id="year"></span> Don · Built with GitHub Pages</p>
-    </footer>
+    <section class="cta">
+      <h2>Ready to disrupt nothing in particular?</h2>
+      <a class="btn primary" href="contact.html">Schedule a Vague Consultation</a>
+    </section>
   </main>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+
+  <footer>
+    <p>© <span id="year"></span> DonCorp™ · A practice website · <a href="https://github.com/jetfan12345-hue/jetfan12345-hue.github.io">View source</a></p>
+    <p class="fine">DonCorp is not a real corporation. Please do not attempt to buy stock in it.</p>
+  </footer>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — DonCorp™</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="marquee"><span>⚠️ FORM DOES NOT ACTUALLY SEND ANYWHERE • ALSO A JOKE ⚠️</span></div>
+  <nav class="nav">
+    <a class="logo" href="index.html">DonCorp™</a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="contact.html" class="active">Contact</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <h1>Contact</h1>
+    <p class="lead">We'd love to hear from you. We will also pretend to respond.</p>
+
+    <section class="card grid-2">
+      <form class="fake-form" onsubmit="return handleFakeSubmit(event)">
+        <label>Name <input type="text" placeholder="Your legal vibe name" required /></label>
+        <label>Email <input type="email" placeholder="you@probably.gmail" required /></label>
+        <label>Reason for contact
+          <select>
+            <option>General vibes inquiry</option>
+            <option>Website practice feedback</option>
+            <option>Agentic trading emotional support</option>
+            <option>I thought this was real</option>
+          </select>
+        </label>
+        <label>Message <textarea rows="5" placeholder="Tell us everything. We won't read it."></textarea></label>
+        <button class="btn primary" type="submit">Send Into The Void</button>
+        <p id="form-msg" class="form-msg" hidden>✅ Message received by the universe. DonCorp will spiritually get back to you.</p>
+      </form>
+
+      <div>
+        <h2>Other Ways to Reach Don</h2>
+        <ul class="contact-list">
+          <li>📧 <a href="mailto:jetfan12345@gmail.com">jetfan12345@gmail.com</a> (actually works)</li>
+          <li>🐙 <a href="https://github.com/jetfan12345-hue">GitHub</a></li>
+          <li>📍 Headquarters: Somewhere with Wi-Fi</li>
+          <li>🕐 Hours: Whenever the market is closed</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>© <span id="year"></span> DonCorp™</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
