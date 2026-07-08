@@ -12,12 +12,12 @@ if (realityToggle && heroImg) {
     heroImg.style.opacity = "0";
     setTimeout(() => {
       if (showingReality) {
-        heroImg.src = "images/solar-dryer-reality.jpg";
+        heroImg.src = "images/solar-dryer-reality.svg";
         heroImg.alt = "What you actually get — cardboard and string";
         if (imgCaption) imgCaption.textContent = "What arrives in the box — cardboard, string, spool";
         realityToggle.textContent = "See Marketing Version";
       } else {
-        heroImg.src = "images/solar-dryer-hero.jpg";
+        heroImg.src = "images/solar-dryer-hero.svg";
         heroImg.alt = "SunLine X1 solar dryer — premium product shot";
         if (imgCaption) imgCaption.textContent = "SunLine X1™ — As seen in our marketing department";
         realityToggle.textContent = "See What You Actually Get";
