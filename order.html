@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="marquee"><span>☀️ SECURE CHECKOUT* • *NOT ACTUALLY SECURE • *NOT ACTUALLY CHECKOUT • PRACTICE WEBSITE ☀️</span></div>
+  <div class="marquee"><span>☀️ FREE SHIPPING • DELIVERY IN 6–8 WEEKS • 100% SOLAR POWERED ☀️</span></div>
 
   <nav class="nav">
     <a class="logo" href="index.html">☀️ SunLine</a>
@@ -20,29 +20,29 @@
 
   <main class="page order-page">
     <h1>Complete Your Order</h1>
-    <p class="lead">You're one click away from revolutionizing laundry. And receiving cardboard.</p>
+    <p class="lead">A simple, effective way to harness the sun — delivered to your door.</p>
 
     <div class="order-layout">
       <section class="card order-summary">
-        <img src="images/solar-dryer-hero.svg" alt="SunLine X1" class="order-thumb" />
+        <img src="images/solar-dryer-box.svg" alt="SunLine X1 packaging" class="order-thumb" />
         <h2>SunLine X1™ Solar Dryer</h2>
         <ul class="order-details">
-          <li>100% solar powered (sun required)</li>
-          <li>Includes string + spool</li>
-          <li>Cardboard chassis in "Natural Kraft" finish</li>
+          <li>100% solar powered — no electricity required</li>
+          <li>Complete kit with line, supports &amp; guide</li>
+          <li>Premium white box, gloss black glass-style panels</li>
         </ul>
         <div class="order-total">
           <span>Total</span>
           <strong>$299.00</strong>
         </div>
-        <p class="fine">Shipping: Free (we'll just leave it on your porch)</p>
+        <p class="fine">Estimated delivery: 6–8 weeks from order date</p>
       </section>
 
       <form class="card order-form" onsubmit="return handleOrder(event)">
         <h2>Shipping Info</h2>
-        <label>Full Name <input type="text" placeholder="Don Eco-conscious" required /></label>
+        <label>Full Name <input type="text" placeholder="Your name" required /></label>
         <label>Email <input type="email" placeholder="you@email.com" required /></label>
-        <label>Address <input type="text" placeholder="123 Solar Lane" required /></label>
+        <label>Address <input type="text" placeholder="Street address" required /></label>
         <label>City / State / ZIP
           <div class="row-3">
             <input type="text" placeholder="City" required />
@@ -60,13 +60,12 @@
 
         <label class="checkbox">
           <input type="checkbox" required />
-          I understand I am ordering cardboard and string, and I am okay with that.
+          I understand delivery may take 6 to 8 weeks from my order date.
         </label>
 
         <button class="btn primary large full" type="submit">Place Order — $299</button>
         <p id="order-msg" class="form-msg" hidden>
-          ✅ Order placed! Your SunLine X1™ (cardboard edition) will ship when the sun is out.
-          No money was charged. This is a practice website.
+          ✅ Thank you! Your SunLine X1™ order has been received. Expect delivery in 6–8 weeks.
         </p>
       </form>
     </div>
