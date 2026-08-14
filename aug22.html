@@ -66,7 +66,7 @@
     .sym svg, .legend svg, .marks svg, .who-row svg { width: 18px; height: 18px; display: block; }
     .who-row { display: flex; gap: 6px; align-items: center; filter: drop-shadow(0 1px 2px #0008); }
     #map { flex: 1; overflow: hidden; }
-    #map .leaflet-map-pane { transform: scale(1.35); transform-origin: 50% 50%; }
+    #map .leaflet-map-pane { transform: scale(2.1); transform-origin: 50% 42%; }
     .leaflet-tooltip.place { font-family: inherit; font-size: 11px; font-weight: 700; opacity: .95; }
     .note { font-size: .78rem; color: #c9b8a0; margin-top: 16px; line-height: 1.4; }
     @media (max-width: 720px) {
@@ -240,14 +240,9 @@
     function lockFrame() {
       map.invalidateSize();
       map.fitBounds(L.latLngBounds([
-        spots.ceremony,
-        spots.grooms,
-        spots.bride,
-        spots.firstLook,
-        spots.reception,
-        spots.pool
-      ]), { padding: [28, 28], maxZoom: 19, animate: false });
-      map.setView(house, 19, { animate: false });
+        spots.ceremony, spots.grooms, spots.bride,
+        spots.firstLook, spots.reception, spots.pool
+      ]), { padding: [8, 8], maxZoom: 19, animate: false });
     }
     setTimeout(lockFrame, 200);
     window.addEventListener("resize", lockFrame);
