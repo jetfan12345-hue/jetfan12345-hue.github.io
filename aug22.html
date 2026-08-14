@@ -114,6 +114,7 @@
         </span>
         <span><i class="dot" style="background:#1e3a5f"></i> Don</span>
         <span><i class="dot" style="background:#2c4a6e"></i> Grooms</span>
+        <span><i class="dot" style="background:#8e5a8a"></i> Bridesmaids</span>
         <span><i class="dot" style="background:#c0392b"></i> Kathy</span>
         <span>
           <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#3d5a40" d="M9 4h6l1 2h4v14H4V6h4l1-2zm3 14a5 5 0 100-10 5 5 0 000 10z"/></svg>
@@ -130,19 +131,23 @@
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    const P = {
-      ceremony:   [43.11165, -123.37779],
-      grooms:     [43.11145, -123.37789],
-      bride:      [43.11145, -123.37777],
-      firstLook:  [43.11117, -123.37780],
-      reception:  [43.11109, -123.37823],
-      pool:       [43.11100, -123.37785]
+    const house = [43.11124, -123.37774];
+    const spots = {
+      ready: [43.11145, -123.37777],
+      grooms: [43.11145, -123.37789],
+      first: [43.11117, -123.37780],
+      ceremony: [43.11165, -123.37779],
+      reception: [43.11109, -123.37823],
+      pool: [43.11100, -123.37785],
+      views: [43.11117, -123.37780],
+      kitchen: [43.11109, -123.37823],
+      dance: [43.11109, -123.37823]
     };
     const places = [
       { name: "Ceremony", key: "ceremony" },
       { name: "Grooms", key: "grooms" },
-      { name: "Bride", key: "bride" },
-      { name: "First look", key: "firstLook" },
+      { name: "Bride", key: "ready" },
+      { name: "First look", key: "first" },
       { name: "Reception", key: "reception" },
       { name: "Pool", key: "pool" }
     ];
@@ -150,6 +155,7 @@
       raechell: { label: "Raechell", kind: "crown", color: "#7b3fa0" },
       don: { label: "Don", kind: "dot", color: "#1e3a5f" },
       grooms: { label: "Grooms", kind: "dot", color: "#2c4a6e" },
+      bridesmaids: { label: "Bridesmaids", kind: "dot", color: "#8e5a8a" },
       kathy: { label: "Kathy", kind: "dot", color: "#c0392b" },
       photo: { label: "Photo", kind: "cam", color: "#3d5a40" },
       dj: { label: "DJ", kind: "tri", color: "#b8860b" },
@@ -159,18 +165,18 @@
     };
     const slots = [
       { t: "9:00", n: "Vendor load-in", who: { flowers: "ceremony", caterer: "reception", dj: "reception" } },
-      { t: "10:00", n: "Getting ready", who: { raechell: "bride", kathy: "bride", photo: "bride" } },
+      { t: "10:00", n: "Getting ready", who: { raechell: "ready", kathy: "ready", photo: "ready" } },
       { t: "11:00", n: "Grooms ready", who: { don: "grooms", grooms: "grooms", photo: "grooms" } },
-      { t: "12:00", n: "First look", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" } },
-      { t: "12:30", n: "Party portraits", who: { raechell: "firstLook", don: "firstLook", grooms: "firstLook", kathy: "firstLook", photo: "firstLook" } },
+      { t: "12:00", n: "First look", who: { raechell: "first", don: "first", photo: "first" } },
+      { t: "12:30", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: { raechell: "views", don: "views", grooms: "views", bridesmaids: "views", kathy: "views", photo: "views" } },
       { t: "1:30", n: "Guests arrive", who: { flowers: "ceremony", kathy: "ceremony" } },
       { t: "2:00", n: "Ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony" } },
       { t: "2:30", n: "Receiving line", who: { raechell: "reception", don: "reception", kathy: "reception", photo: "reception" } },
-      { t: "3:00", n: "Family photos", who: { raechell: "firstLook", don: "firstLook", grooms: "firstLook", kathy: "firstLook", photo: "firstLook" } },
+      { t: "3:00", n: "Family photos", who: { raechell: "views", don: "views", grooms: "views", kathy: "views", photo: "views" } },
       { t: "4:00", n: "Bar + catering", who: { bar: "pool", caterer: "reception", dj: "reception", flowers: "reception" } },
       { t: "5:00", n: "Reception dinner", who: { raechell: "reception", don: "reception", grooms: "reception", kathy: "reception", caterer: "reception", bar: "pool", dj: "reception" } },
       { t: "6:30", n: "Dancing", who: { raechell: "reception", don: "reception", grooms: "reception", kathy: "reception", dj: "reception", bar: "pool" } },
-      { t: "7:00", n: "Golden hour", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" } },
+      { t: "7:00", n: "Golden hour", who: { raechell: "views", don: "views", photo: "views" } },
       { t: "8:00", n: "Send-off", who: { raechell: "reception", don: "reception", kathy: "reception", photo: "reception" } }
     ];
 
@@ -196,7 +202,7 @@
       zoomSnap: 1,
       minZoom: 19,
       maxZoom: 19
-    }).setView([43.11124, -123.37774], 19);
+    }).setView(house, 19);
 
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       maxZoom: 19,
@@ -204,7 +210,7 @@
     }).addTo(map);
 
     places.forEach(function (p) {
-      L.marker(P[p.key], {
+      L.marker(spots[p.key], {
         icon: L.divIcon({ className: "", html: "", iconSize: [1, 1], iconAnchor: [0, 0] }),
         interactive: false
       }).addTo(map).bindTooltip(p.name, {
@@ -227,7 +233,7 @@
         const key = entry[0];
         const loc = entry[1];
         const p = people[key];
-        const ll = P[loc];
+        const ll = spots[loc];
         const n = used[loc] || 0;
         used[loc] = n + 1;
         const jitter = [ll[0] - 0.000012 - n * 0.000010, ll[1] + n * 0.000012];
@@ -253,7 +259,7 @@
     });
     draw(current);
     function lockFrame() {
-      map.setView([43.11124, -123.37774], 19, { animate: false });
+      map.setView(house, 19, { animate: false });
       map.invalidateSize();
     }
     setTimeout(lockFrame, 200);
