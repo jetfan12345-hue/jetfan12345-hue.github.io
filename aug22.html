@@ -60,24 +60,13 @@
     .times button.on { background: #3a2a44; border-color: var(--gold); }
     .times .t { display: block; font-weight: 700; color: var(--gold); font-size: .78rem; }
     .times .n { display: block; font-size: .94rem; }
-    .times .marks { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
-    .chip { font-size: .68rem; padding: 1px 6px; border-radius: 999px; background: #2a2430; }
+    .times .marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
     .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; font-size: .84rem; }
     .legend span { display: flex; align-items: center; gap: 6px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-    .tri {
-      width: 0;
-      height: 0;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-bottom: 11px solid var(--vendor);
-      display: inline-block;
-    }
+    .sym svg, .legend svg, .marks svg, .who-row svg { width: 18px; height: 18px; display: block; }
+    .who-row { display: flex; gap: 6px; align-items: center; filter: drop-shadow(0 1px 2px #0008); }
     #map { flex: 1; }
-    .leaflet-tooltip.who { font-family: inherit; font-weight: 700; }
     .leaflet-tooltip.place { font-family: inherit; font-size: 11px; font-weight: 700; opacity: .95; }
-    .mk { width: 28px; height: 28px; display: grid; place-items: center; filter: drop-shadow(0 1px 2px #0008); }
-    .mk svg { width: 26px; height: 26px; }
     .note { font-size: .78rem; color: #c9b8a0; margin-top: 16px; line-height: 1.4; }
     @media (max-width: 720px) {
       #app { flex-direction: column; }
@@ -107,24 +96,7 @@
       <h2>Times</h2>
       <ul class="times" id="times"></ul>
       <h2>Who</h2>
-      <div class="legend">
-        <span>
-          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#7b3fa0" d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9H5zm0 2h14v2H5z"/></svg>
-          Raechell
-        </span>
-        <span><i class="dot" style="background:#1e3a5f"></i> Don</span>
-        <span><i class="dot" style="background:#2c4a6e"></i> Grooms</span>
-        <span><i class="dot" style="background:#8e5a8a"></i> Bridesmaids</span>
-        <span><i class="dot" style="background:#c0392b"></i> Kathy</span>
-        <span>
-          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#3d5a40" d="M9 4h6l1 2h4v14H4V6h4l1-2zm3 14a5 5 0 100-10 5 5 0 000 10z"/></svg>
-          Photo
-        </span>
-        <span><i class="tri"></i> DJ</span>
-        <span><i class="tri"></i> Caterer</span>
-        <span><i class="tri"></i> Flowers</span>
-        <span><i class="tri"></i> Bar</span>
-      </div>
+      <div class="legend" id="legend"></div>
       <p class="note">4:00 bartender at the pool · catering at reception · golden hour is couple + photographer only.</p>
     </aside>
     <div id="map"></div>
@@ -154,16 +126,16 @@
       { name: "Pool", key: "pool" }
     ];
     const people = {
-      raechell: { label: "Raechell", kind: "crown", color: "#7b3fa0" },
-      don: { label: "Don", kind: "dot", color: "#1e3a5f" },
-      grooms: { label: "Grooms", kind: "dot", color: "#2c4a6e" },
-      bridesmaids: { label: "Bridesmaids", kind: "dot", color: "#8e5a8a" },
-      kathy: { label: "Kathy", kind: "dot", color: "#c0392b" },
-      photo: { label: "Photo", kind: "cam", color: "#3d5a40" },
-      dj: { label: "DJ", kind: "tri", color: "#b8860b" },
-      caterer: { label: "Caterer", kind: "tri", color: "#b8860b" },
-      flowers: { label: "Flowers", kind: "tri", color: "#b8860b" },
-      bar: { label: "Bar", kind: "tri", color: "#b8860b" }
+      raechell: { label: "Raechell", kind: "crown", color: "#7C3AED" },
+      bridesmaids: { label: "Bridesmaids", kind: "dot", color: "#F9A8D4" },
+      don: { label: "Don", kind: "dot", color: "#1E3A8A" },
+      grooms: { label: "Grooms", kind: "dot", color: "#38BDF8" },
+      kathy: { label: "Kathy", kind: "dot", color: "#E11D48" },
+      photo: { label: "Photo", kind: "cam", color: "#F59E0B" },
+      dj: { label: "DJ", kind: "tri", color: "#F97316" },
+      caterer: { label: "Caterer", kind: "tri", color: "#0D9488" },
+      flowers: { label: "Flowers", kind: "tri", color: "#22C55E" },
+      bar: { label: "Bar", kind: "tri", color: "#EAB308" }
     };
     const slots = [
       { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: { raechell: "bride", kathy: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", caterer: "reception", bar: "reception", dj: "reception" } },
@@ -178,19 +150,13 @@
       { t: "6:30", n: "Golden hour — Last portraits", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" } }
     ];
 
-    function iconFor(p) {
-      const svg = {
+    function svgFor(p) {
+      return {
         crown: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9H5zm0 2h14v2H5z"/></svg>`,
         cam: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M9 4h6l1.2 2H20v14H4V6h4.8L9 4zm3 13a4 4 0 100-8 4 4 0 000 8z"/></svg>`,
         tri: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M12 3l10 18H2L12 3z"/></svg>`,
         dot: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="${p.color}"/></svg>`
       }[p.kind];
-      return L.divIcon({
-        className: "",
-        html: `<div class="mk">${svg}</div>`,
-        iconSize: [28, 28],
-        iconAnchor: [14, 14]
-      });
     }
 
     const map = L.map("map", {
@@ -226,29 +192,43 @@
       current = i;
       layer.clearLayers();
       const slot = slots[i];
-      const used = {};
+      const byLoc = {};
       Object.entries(slot.who).forEach(function (entry) {
-        const key = entry[0];
         const loc = entry[1];
-        const p = people[key];
-        const ll = spots[loc];
-        const n = used[loc] || 0;
-        used[loc] = n + 1;
-        const jitter = [ll[0] - 0.000012 - n * 0.000010, ll[1] + n * 0.000012];
-        L.marker(jitter, { icon: iconFor(p) }).addTo(layer)
-          .bindTooltip(p.label, { className: "who", permanent: true, direction: "bottom", offset: [0, 8] });
+        (byLoc[loc] = byLoc[loc] || []).push(people[entry[0]]);
+      });
+      Object.keys(byLoc).forEach(function (loc) {
+        const list = byLoc[loc];
+        const w = list.length * 24 - 6;
+        L.marker(spots[loc], {
+          icon: L.divIcon({
+            className: "",
+            html: `<div class="who-row">${list.map(svgFor).join("")}</div>`,
+            iconSize: [w, 18],
+            iconAnchor: [w / 2, -12]
+          }),
+          interactive: false
+        }).addTo(layer);
       });
       document.querySelectorAll(".times button").forEach(function (b, idx) {
         b.classList.toggle("on", idx === i);
       });
     }
 
+    const legend = document.getElementById("legend");
+    Object.keys(people).forEach(function (k) {
+      const p = people[k];
+      const span = document.createElement("span");
+      span.innerHTML = `${svgFor(p)} ${p.label}`;
+      legend.appendChild(span);
+    });
+
     const ul = document.getElementById("times");
     slots.forEach(function (s, i) {
       const li = document.createElement("li");
       const b = document.createElement("button");
       const marks = Object.keys(s.who).map(function (k) {
-        return `<span class="chip">${people[k].label}</span>`;
+        return svgFor(people[k]);
       }).join("");
       b.innerHTML = `<span class="t">${s.t}</span><span class="n">${s.n}</span><span class="marks">${marks}</span>`;
       b.onclick = function () { draw(i); };
