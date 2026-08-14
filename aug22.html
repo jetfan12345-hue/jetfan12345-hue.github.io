@@ -134,8 +134,10 @@
     const house = [43.11124, -123.37774];
     const spots = {
       ready: [43.11145, -123.37777],
+      bride: [43.11145, -123.37777],
       grooms: [43.11145, -123.37789],
       first: [43.11117, -123.37780],
+      firstLook: [43.11117, -123.37780],
       ceremony: [43.11165, -123.37779],
       reception: [43.11109, -123.37823],
       pool: [43.11100, -123.37785],
@@ -164,20 +166,16 @@
       bar: { label: "Bar", kind: "tri", color: "#b8860b" }
     };
     const slots = [
-      { t: "9:00", n: "Vendor load-in", who: { flowers: "ceremony", caterer: "reception", dj: "reception" } },
-      { t: "10:00", n: "Getting ready", who: { raechell: "ready", kathy: "ready", photo: "ready" } },
-      { t: "11:00", n: "Grooms ready", who: { don: "grooms", grooms: "grooms", photo: "grooms" } },
-      { t: "12:00", n: "First look", who: { raechell: "first", don: "first", photo: "first" } },
-      { t: "12:30", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: { raechell: "views", don: "views", grooms: "views", bridesmaids: "views", kathy: "views", photo: "views" } },
-      { t: "1:30", n: "Guests arrive", who: { flowers: "ceremony", kathy: "ceremony" } },
-      { t: "2:00", n: "Ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony" } },
-      { t: "2:30", n: "Receiving line", who: { raechell: "reception", don: "reception", kathy: "reception", photo: "reception" } },
-      { t: "3:00", n: "Family photos", who: { raechell: "views", don: "views", grooms: "views", kathy: "views", photo: "views" } },
-      { t: "4:00", n: "Bar + catering", who: { bar: "pool", caterer: "reception", dj: "reception", flowers: "reception" } },
-      { t: "5:00", n: "Reception dinner", who: { raechell: "reception", don: "reception", grooms: "reception", kathy: "reception", caterer: "reception", bar: "pool", dj: "reception" } },
-      { t: "6:30", n: "Dancing", who: { raechell: "reception", don: "reception", grooms: "reception", kathy: "reception", dj: "reception", bar: "pool" } },
-      { t: "7:00", n: "Golden hour", who: { raechell: "views", don: "views", photo: "views" } },
-      { t: "8:00", n: "Send-off", who: { raechell: "reception", don: "reception", kathy: "reception", photo: "reception" } }
+      { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: { raechell: "bride", kathy: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", caterer: "reception", bar: "reception", dj: "reception" } },
+      { t: "9:30–11:00", n: "Getting-ready photos", who: { raechell: "bride", kathy: "bride", photo: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", dj: "reception" } },
+      { t: "11:15", n: "First look — Donnie and Raechell", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", grooms: "grooms", kathy: "reception", dj: "reception" } },
+      { t: "11:25–12:00", n: "Couple, then Judy and Stevah", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", kathy: "firstLook", grooms: "grooms", dj: "reception" } },
+      { t: "12:10–1:15", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: { raechell: "firstLook", don: "firstLook", grooms: "firstLook", kathy: "firstLook", photo: "firstLook", caterer: "reception", bar: "reception" } },
+      { t: "1:30–2:00", n: "Guests arrive, get seated, ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony", dj: "ceremony", flowers: "ceremony", caterer: "reception", bar: "reception" } },
+      { t: "2:15–2:30", n: "Don and Raechell first, then greeting and starting seating", who: { raechell: "reception", don: "reception", photo: "reception", caterer: "reception", bar: "reception", dj: "reception" } },
+      { t: "3:15", n: "Dinner — Tables called one at a time", who: { raechell: "reception", don: "reception", caterer: "reception", bar: "reception", dj: "reception" } },
+      { t: "4:00", n: "After dinner — Guests out by the pool", who: { raechell: "pool", don: "pool", photo: "pool", dj: "pool", bar: "pool", caterer: "reception" } },
+      { t: "6:30", n: "Golden hour — Last portraits", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" } }
     ];
 
     function iconFor(p) {
@@ -222,7 +220,7 @@
     });
 
     const layer = L.layerGroup().addTo(map);
-    let current = 9;
+    let current = 0;
 
     function draw(i) {
       current = i;
