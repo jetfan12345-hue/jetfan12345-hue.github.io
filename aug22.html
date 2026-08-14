@@ -1,285 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Aug 22" />
-  <meta name="theme-color" content="#161018" />
-  <title>Aug 22 — Concord Estate</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <style>
-    :root {
-      --ink: #1b1520;
-      --paper: #f6f1e8;
-      --gold: #c4a35a;
-      --purple: #7b3fa0;
-      --red: #c0392b;
-      --groom: #2c4a6e;
-      --don: #1e3a5f;
-      --photo: #3d5a40;
-      --vendor: #b8860b;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; height: 100dvh; font-family: "Iowan Old Style", Palatino, Georgia, serif; background: var(--ink); color: var(--paper); }
-    #app { display: flex; height: 100%; }
-    aside {
-      width: 340px;
-      min-width: 270px;
-      overflow: auto;
-      padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
-      background: #161018;
-      border-right: 1px solid #3a2f28;
-    }
-    h1 { font-size: 1.38rem; margin: 0 0 4px; letter-spacing: .02em; }
-    .sub { color: #c9b8a0; font-size: .82rem; margin: 0 0 14px; line-height: 1.35; }
-    h2 {
-      font-size: .72rem;
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      color: var(--gold);
-      margin: 18px 0 8px;
-    }
-    .times { list-style: none; margin: 0; padding: 0; }
-    .times button {
-      width: 100%;
-      text-align: left;
-      background: #221c24;
-      color: var(--paper);
-      border: 1px solid #3a3036;
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      min-height: 44px;
-      cursor: pointer;
-      font: inherit;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .times button:hover,
-    .times button.on { background: #3a2a44; border-color: var(--gold); }
-    .times .t { display: block; font-weight: 700; color: var(--gold); font-size: .78rem; }
-    .times .n { display: block; font-size: .94rem; }
-    .times .marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
-    .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; font-size: .84rem; }
-    .legend span { display: flex; align-items: center; gap: 6px; }
-    .sym svg, .legend svg, .marks svg, .who-row svg { width: 54px; height: 54px; display: block; }
-    .who-row { display: flex; gap: 6px; align-items: center; filter: drop-shadow(0 1px 2px #0008); }
-    #who {
-      margin: 10px 0 4px;
-      padding: 12px 14px;
-      background: #2a2230;
-      border: 1px solid #c4a35a;
-      border-radius: 8px;
-      color: var(--paper);
-    }
-    #who > div { margin: 0 0 8px; font-size: 1rem; font-weight: 700; color: var(--gold); }
-    #who ul { margin: 0; padding-left: 1.15em; font-size: 1rem; line-height: 1.45; }
-    #who li { margin: 0 0 6px; }
-    #map-clip {
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      position: relative;
-    }
-    #map {
-      position: absolute;
-      width: 220%;
-      height: 220%;
-      left: -60%;
-      top: -50%;
-    }
-    .leaflet-tooltip.place { font-family: inherit; font-size: 11px; font-weight: 700; opacity: .95; }
-    .note { font-size: .78rem; color: #c9b8a0; margin-top: 16px; line-height: 1.4; }
-    @media (max-width: 720px) {
-      #app { flex-direction: column; }
-      #map-clip { height: 52%; min-height: 240px; }
-      aside {
-        width: 100%;
-        height: 48%;
-        border-right: 0;
-        border-top: 1px solid #3a2f28;
-        padding: 12px 14px calc(16px + env(safe-area-inset-bottom));
-      }
-      h1 { font-size: 1.15rem; }
-      .sub { margin-bottom: 8px; }
-      h2 { margin: 10px 0 6px; }
-      .times { display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; }
-      .times li { flex: 0 0 auto; }
-      .times button { width: auto; min-width: 132px; margin-bottom: 0; }
-      .note { margin-top: 10px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aug 22 — Concord Estate</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root {
+    --ink: #1b1520;
+    --paper: #f6f1e8;
+    --gold: #c4a35a;
+    --line: #3a2f28;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; height: 100dvh; font-family: Georgia, "Iowan Old Style", Palatino, serif; background: var(--ink); color: var(--paper); }
+  #app { display: flex; height: 100%; }
+  aside {
+    width: 340px; min-width: 280px; overflow: auto;
+    padding: 16px 14px calc(20px + env(safe-area-inset-bottom));
+    background: #161018; border-right: 1px solid var(--line);
+  }
+  h1 { font-size: 1.28rem; margin: 0 0 2px; }
+  .sub { color: #c9b8a0; font-size: .8rem; margin: 0 0 12px; line-height: 1.35; }
+  h2 { font-size: .7rem; text-transform: uppercase; letter-spacing: .14em; color: var(--gold); margin: 14px 0 8px; }
+  .times { list-style: none; margin: 0; padding: 0; }
+  .times button {
+    width: 100%; text-align: left; background: #221c24; color: var(--paper);
+    border: 1px solid #3a3036; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px;
+    cursor: pointer; font: inherit; -webkit-tap-highlight-color: transparent;
+  }
+  .times button:hover, .times button.on { background: #3a2a44; border-color: var(--gold); }
+  .times .t { display: block; font-weight: 700; color: var(--gold); font-size: .78rem; }
+  .times .n { display: block; font-size: .9rem; margin-top: 1px; }
+  .marks { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; align-items: center; }
+  .who-box {
+    margin-top: 10px; padding: 10px 12px; border: 1px solid var(--gold);
+    border-radius: 8px; background: #221c24; font-family: system-ui, sans-serif; font-size: 14px;
+  }
+  .who-box .when { font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .who-box ul { margin: 0; padding-left: 18px; }
+  .who-box li { margin: 3px 0; }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; font-size: .84rem; font-family: system-ui, sans-serif; }
+  .legend span { display: flex; align-items: center; gap: 8px; }
+  .dot { border-radius: 50%; border: 2px solid #1a1a1a; display: block; flex: 0 0 auto; }
+  .sym { display: block; filter: drop-shadow(0 1px 2px #0008); }
+  #map-clip { flex: 1; min-width: 0; overflow: hidden; position: relative; background: #1a1a14; }
+  #map { position: absolute; width: 300%; height: 300%; left: -110%; top: -80%; }
+  .place-wrap, .icon-wrap { background: none !important; border: none !important; }
+  .place {
+    display: inline-block; background: rgba(251,248,244,.94); border: 1px solid #2b2118;
+    padding: 2px 7px; font: 12px/1.2 system-ui, sans-serif; color: #2b2118; white-space: nowrap;
+  }
+  .place-sm { font-size: 11px; padding: 1px 5px; }
+  .leaflet-tooltip, .leaflet-popup, .leaflet-control-attribution, .leaflet-marker-shadow { display: none !important; }
+  .note { font-size: .75rem; color: #c9b8a0; margin-top: 12px; line-height: 1.35; }
+  @media (max-width: 720px) {
+    #app { flex-direction: column; }
+    aside { width: 100%; height: 48%; border-right: 0; border-top: 1px solid var(--line); }
+    #map-clip { height: 52%; min-height: 240px; }
+  }
+</style>
 </head>
 <body>
-  <div id="app">
-    <aside>
-      <h1>Aug 22 — Concord Estate</h1>
-      <p class="sub">Saturday · 2090 Roberts Mountain Rd, Roseburg, OR · tap a time to see who is where</p>
-      <h2>Times</h2>
-      <ul class="times" id="times"></ul>
-      <div id="who"></div>
-      <h2>Who</h2>
-      <div class="legend" id="legend"></div>
-      <p class="note">4:00 bartender at the pool · catering at reception · golden hour is couple + photographer only.</p>
-    </aside>
-    <div id="map-clip">
-      <div id="map"></div>
-    </div>
-  </div>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    const house = [43.11124, -123.37774];
-    const spots = {
-      ready: [43.11145, -123.37777],
-      bride: [43.11145, -123.37777],
-      grooms: [43.11145, -123.37789],
-      first: [43.11117, -123.37780],
-      firstLook: [43.11117, -123.37780],
-      ceremony: [43.11165, -123.37779],
-      reception: [43.11109, -123.37823],
-      pool: [43.11100, -123.37785],
-      views: [43.11117, -123.37780],
-      kitchen: [43.11109, -123.37823],
-      dance: [43.11109, -123.37823]
-    };
-    const places = [
-      { name: "Ceremony", key: "ceremony" },
-      { name: "Grooms", key: "grooms" },
-      { name: "Bride", key: "ready" },
-      { name: "First look", key: "first" },
-      { name: "Reception", key: "reception" },
-      { name: "Pool", key: "pool" }
-    ];
-    const people = {
-      raechell: { label: "Raechell", kind: "crown", color: "#7C3AED" },
-      don: { label: "Don", kind: "dot", color: "#1E3A8A" },
-      bridesmaids: { label: "Bridesmaids", kind: "dot", color: "#F9A8D4" },
-      grooms: { label: "Grooms", kind: "dot", color: "#38BDF8" },
-      kathy: { label: "Kathy", kind: "dot", color: "#E11D48" },
-      stevah: { label: "Stevah", kind: "dot", color: "#9CA3AF" },
-      photo: { label: "Photo", kind: "cam", color: "#F59E0B" },
-      dj: { label: "DJ", kind: "tri", color: "#F97316" },
-      caterer: { label: "Caterer", kind: "tri", color: "#0D9488" },
-      flowers: { label: "Flowers", kind: "tri", color: "#22C55E" },
-      bar: { label: "Bar", kind: "tri", color: "#EAB308" }
-    };
-    const slots = [
-      { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: [["raechell","bride"],["bridesmaids","bride"],["don","grooms"],["grooms","grooms"],["flowers","ceremony"],["kathy","reception"],["bar","reception"],["dj","reception"]], notes: ["Raechell, Bridesmaids at Bride", "Don, Grooms at Grooms", "Flowers at Ceremony", "Kathy, Bar, DJ at Reception"] },
-      { t: "9:30–11:00", n: "Getting-ready photos", who: [["raechell","bride"],["bridesmaids","bride"],["photo","bride"],["don","grooms"],["grooms","grooms"],["photo","grooms"],["flowers","ceremony"],["kathy","reception"],["dj","reception"]], notes: ["Raechell, Bridesmaids, Photo at Bride", "Don, Grooms, Photo at Grooms", "Flowers at Ceremony", "Kathy, DJ at Reception"] },
-      { t: "11:15", n: "First look — Donnie and Raechell", who: [["raechell","firstLook"],["don","firstLook"],["photo","firstLook"],["bridesmaids","bride"],["grooms","grooms"],["kathy","reception"],["dj","reception"]], notes: ["Raechell, Don, Photo at first look", "Bridesmaids at Bride", "Grooms at Grooms", "Kathy, DJ at Reception"] },
-      { t: "11:25–12:00", n: "Couple, then Judy and Stevah", who: [["raechell","firstLook"],["don","firstLook"],["stevah","firstLook"],["photo","firstLook"],["bridesmaids","bride"],["grooms","grooms"],["kathy","reception"],["dj","reception"]], notes: ["Raechell, Don, Stevah, Photo at first look", "Bridesmaids at Bride", "Grooms at Grooms", "Kathy, DJ at Reception"] },
-      { t: "12:10–1:15", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: [["raechell","firstLook"],["don","firstLook"],["bridesmaids","firstLook"],["grooms","firstLook"],["stevah","firstLook"],["kathy","firstLook"],["photo","firstLook"],["caterer","reception"],["bar","reception"]], notes: ["Raechell, Don, Bridesmaids, Grooms, Stevah, Kathy, Photo at first look", "Caterer, Bar at Reception"] },
-      { t: "1:30–2:00", n: "Guests arrive, get seated, ceremony", who: [["raechell","ceremony"],["don","ceremony"],["bridesmaids","ceremony"],["grooms","ceremony"],["stevah","ceremony"],["kathy","ceremony"],["photo","ceremony"],["dj","ceremony"],["flowers","ceremony"],["caterer","reception"],["bar","reception"]], notes: ["Raechell, Don, Bridesmaids, Grooms, Stevah, Kathy, Photo, DJ, Flowers at Ceremony", "Caterer, Bar at Reception"] },
-      { t: "2:15–2:30", n: "Don and Raechell first, then greeting and starting seating", who: [["raechell","reception"],["don","reception"],["photo","reception"],["caterer","reception"],["bar","reception"],["dj","reception"]], notes: ["Raechell, Don, Photo, Caterer, Bar, DJ at Reception"] },
-      { t: "3:15", n: "Dinner — Tables called one at a time", who: [["raechell","reception"],["don","reception"],["caterer","reception"],["bar","reception"],["dj","reception"]], notes: ["Raechell, Don, Caterer, Bar, DJ at Reception"] },
-      { t: "4:00", n: "After dinner — Guests out by the pool", who: [["raechell","pool"],["don","pool"],["photo","pool"],["dj","pool"],["bar","pool"],["caterer","reception"]], notes: ["Raechell, Don, Photo, DJ, Bar at Pool", "Caterer at Reception"] },
-      { t: "6:30", n: "Golden hour — Last portraits", who: [["raechell","ceremony"],["don","ceremony"],["photo","ceremony"]], notes: ["Raechell, Don, Photo at Ceremony"] }
-    ];
-
-    function svgFor(p) {
-      return {
-        crown: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9H5zm0 2h14v2H5z"/></svg>`,
-        cam: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M9 4h6l1.2 2H20v14H4V6h4.8L9 4zm3 13a4 4 0 100-8 4 4 0 000 8z"/></svg>`,
-        tri: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M12 3l10 18H2L12 3z"/></svg>`,
-        dot: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="${p.color}"/></svg>`
-      }[p.kind];
-    }
-
-    const map = L.map("map", {
-      zoomControl: true,
-      attributionControl: false,
-      closePopupOnClick: false,
-      zoomSnap: 1,
-      minZoom: 19,
-      maxZoom: 19
-    }).setView(house, 19);
-
-    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-      maxZoom: 19,
-      maxNativeZoom: 19
-    }).addTo(map);
-
-    places.forEach(function (p) {
-      L.marker(spots[p.key], {
-        icon: L.divIcon({ className: "", html: "", iconSize: [1, 1], iconAnchor: [0, 0] }),
-        interactive: false
-      }).addTo(map).bindTooltip(p.name, {
-        className: "place",
-        permanent: true,
-        direction: "center",
-        offset: [0, 0]
-      });
-    });
-
-    const layer = L.layerGroup().addTo(map);
-    let current = 0;
-
-    function draw(i) {
-      current = i;
-      layer.clearLayers();
-      const slot = slots[i];
-      const byLoc = {};
-      slot.who.forEach(function (entry) {
-        const loc = entry[1];
-        (byLoc[loc] = byLoc[loc] || []).push(people[entry[0]]);
-      });
-      Object.keys(byLoc).forEach(function (loc) {
-        const list = byLoc[loc];
-        const w = list.length * 60 - 6;
-        L.marker(spots[loc], {
-          icon: L.divIcon({
-            className: "",
-            html: `<div class="who-row">${list.map(svgFor).join("")}</div>`,
-            iconSize: [w, 54],
-            iconAnchor: [w / 2, -16]
-          }),
-          interactive: false
-        }).addTo(layer);
-      });
-      document.querySelectorAll(".times button").forEach(function (b, idx) {
-        b.classList.toggle("on", idx === i);
-      });
-      const box = document.getElementById("who");
-      box.innerHTML = `<div>${slot.t}</div><ul>${slot.notes.map(function (line) {
-        return `<li>${line}</li>`;
-      }).join("")}</ul>`;
-    }
-
-    const legend = document.getElementById("legend");
-    Object.keys(people).forEach(function (k) {
-      const p = people[k];
-      const span = document.createElement("span");
-      span.innerHTML = `${svgFor(p)} ${p.label}`;
-      legend.appendChild(span);
-    });
-
-    const ul = document.getElementById("times");
-    slots.forEach(function (s, i) {
-      const li = document.createElement("li");
-      const b = document.createElement("button");
-      const seen = {};
-      const marks = s.who.map(function (entry) {
-        const k = entry[0];
-        if (seen[k]) return "";
-        seen[k] = true;
-        return svgFor(people[k]);
-      }).join("");
-      b.innerHTML = `<span class="t">${s.t}</span><span class="n">${s.n}</span><span class="marks">${marks}</span>`;
-      b.onclick = function () { draw(i); };
-      li.appendChild(b);
-      ul.appendChild(li);
-    });
-    draw(current);
-    function lockFrame() {
-      map.invalidateSize();
-      map.fitBounds(L.latLngBounds([
-        spots.ceremony, spots.grooms, spots.bride,
-        spots.firstLook, spots.reception, spots.pool
-      ]), { padding: [8, 8], maxZoom: 19, animate: false });
-    }
-    setTimeout(lockFrame, 200);
-    window.addEventListener("resize", lockFrame);
-  </script>
+<div id="app">
+  <aside>
+    <h1>Saturday Aug 22</h1>
+    <div class="sub">Concord Estate · tap a time to see who is where</div>
+    <h2>Times</h2>
+    <ul class="times" id="times"></ul>
+    <div class="who-box" id="who"></div>
+    <h2>Who</h2>
+    <div class="legend" id="legend"></div>
+    <div class="note">4:00 bartender at the pool · catering stays at reception · golden hour is couple + photographer only.</div>
+  </aside>
+  <div id="map-clip"><div id="map"></div></div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const COLORS = {
+  bride: "#7C3AED", bridesmaids: "#F9A8D4", groom: "#1E3A8A", groomsmen: "#38BDF8",
+  photographers: "#F59E0B", dj: "#F97316", stevah: "#78716C", caterer: "#0D9488",
+  flower: "#22C55E", kathy: "#E11D48", bartenders: "#EAB308"
+};
+const LEGEND = [["bride","Raechell"],["bridesmaids","Maids"],["groom","Donnie"],["groomsmen","Grooms"],["photographers","Photo"],["dj","DJ"],["stevah","Stevah"],["caterer","Catering"],["flower","Flowers"],["kathy","Kathy"],["bartenders","Bar"]];
+const SHAPE = { bride:"crown", photographers:"camera", dj:"tri", caterer:"tri", flower:"tri", bartenders:"tri" };
+const P = { ceremony:[43.11165,-123.37779], grooms:[43.11145,-123.37789], bride:[43.11145,-123.37777], firstLook:[43.11117,-123.37780], reception:[43.11109,-123.37823], pool:[43.11100,-123.37785] };
+const PLACES = [{id:"ceremony",label:"Ceremony"},{id:"grooms",label:"Grooms"},{id:"bride",label:"Bride"},{id:"firstLook",label:"first look"},{id:"reception",label:"Reception"},{id:"pool",label:"Pool"}];
+const WHERE = { ceremony:"Ceremony", grooms:"Grooms", bride:"Bride", firstLook:"first look", reception:"Reception", pool:"Pool" };
+const WHO = Object.fromEntries(LEGEND);
+const SLOTS = [
+  { id:"t9", time:"9:00 arrive", blurb:"Get ready. DJ on tables, cloths, chairs.", people:[{g:"bride",at:"bride"},{g:"bridesmaids",at:"bride"},{g:"groom",at:"grooms"},{g:"groomsmen",at:"grooms"},{g:"flower",at:"ceremony"},{g:"kathy",at:"reception"},{g:"bartenders",at:"reception"},{g:"dj",at:"reception"}] },
+  { id:"t930", time:"9:30–11:00", blurb:"Getting-ready photos", people:[{g:"bride",at:"bride"},{g:"bridesmaids",at:"bride"},{g:"photographers",at:"bride"},{g:"groom",at:"grooms"},{g:"groomsmen",at:"grooms"},{g:"photographers",at:"grooms"},{g:"flower",at:"ceremony"},{g:"kathy",at:"reception"},{g:"dj",at:"reception"}] },
+  { id:"t1115", time:"11:15 first look", blurb:"Donnie and Raechell", people:[{g:"bride",at:"firstLook"},{g:"groom",at:"firstLook"},{g:"photographers",at:"firstLook"},{g:"bridesmaids",at:"bride"},{g:"groomsmen",at:"grooms"},{g:"kathy",at:"reception"},{g:"dj",at:"reception"}] },
+  { id:"t1125", time:"11:25–12:00", blurb:"Couple, then Judy and Stevah", people:[{g:"bride",at:"firstLook"},{g:"groom",at:"firstLook"},{g:"stevah",at:"firstLook"},{g:"photographers",at:"firstLook"},{g:"bridesmaids",at:"bride"},{g:"groomsmen",at:"grooms"},{g:"kathy",at:"reception"},{g:"dj",at:"reception"}] },
+  { id:"t1210", time:"12:10–1:15", blurb:"Don and Raechell first, then the bride and groom party, then parents and relatives. Catering in at 1.", people:[{g:"bride",at:"firstLook"},{g:"groom",at:"firstLook"},{g:"bridesmaids",at:"firstLook"},{g:"groomsmen",at:"firstLook"},{g:"stevah",at:"firstLook"},{g:"kathy",at:"firstLook"},{g:"photographers",at:"firstLook"},{g:"caterer",at:"reception"},{g:"bartenders",at:"reception"}] },
+  { id:"t130", time:"1:30–2:00", blurb:"Guests arrive, get seated, ceremony", people:[{g:"bride",at:"ceremony"},{g:"groom",at:"ceremony"},{g:"bridesmaids",at:"ceremony"},{g:"groomsmen",at:"ceremony"},{g:"stevah",at:"ceremony"},{g:"kathy",at:"ceremony"},{g:"photographers",at:"ceremony"},{g:"dj",at:"ceremony"},{g:"flower",at:"ceremony"},{g:"caterer",at:"reception"},{g:"bartenders",at:"reception"}] },
+  { id:"t210", time:"2:15–2:30", blurb:"Don and Raechell first, then greeting and starting seating", people:[{g:"bride",at:"reception"},{g:"groom",at:"reception"},{g:"photographers",at:"reception"},{g:"caterer",at:"reception"},{g:"bartenders",at:"reception"},{g:"dj",at:"reception"}] },
+  { id:"t315", time:"3:15 dinner", blurb:"Tables called one at a time", people:[{g:"bride",at:"reception"},{g:"groom",at:"reception"},{g:"caterer",at:"reception"},{g:"bartenders",at:"reception"},{g:"dj",at:"reception"}] },
+  { id:"t4", time:"4:00 after dinner", blurb:"Guests out by the pool", people:[{g:"bride",at:"pool"},{g:"groom",at:"pool"},{g:"photographers",at:"pool"},{g:"dj",at:"pool"},{g:"bartenders",at:"pool"},{g:"caterer",at:"reception"}] },
+  { id:"t630", time:"6:30 golden hour", blurb:"Last portraits", people:[{g:"bride",at:"ceremony"},{g:"groom",at:"ceremony"},{g:"photographers",at:"ceremony"}] }
+];
+function symbolHtml(g,size){ const c=COLORS[g]; const kind=SHAPE[g]||"dot"; const s=size||28;
+  if(kind==="crown") return '<svg class="sym" width="'+s+'" height="'+s+'" viewBox="0 0 24 24"><defs><linearGradient id="cg'+s+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4B5FD"/><stop offset="40%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#5B21B6"/></linearGradient></defs><path d="M3 17h18v2.4H3V17zm1.2-1.6 3-8.2 3.3 5.2L12 4.2l1.5 8.2 3.3-5.2 3 8.2H4.2z" fill="url(#cg'+s+')" stroke="#DDD6FE" stroke-width="1"/></svg>';
+  if(kind==="camera") return '<svg class="sym" width="'+s+'" height="'+s+'" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2" fill="'+c+'" stroke="#1a1a1a" stroke-width="1.4"/><path d="M8 8 9.6 5h4.8L16 8" fill="'+c+'" stroke="#1a1a1a" stroke-width="1.4"/><circle cx="12" cy="14" r="3.1" fill="#fff" stroke="#1a1a1a" stroke-width="1.3"/></svg>';
+  if(kind==="tri") return '<svg class="sym" width="'+s+'" height="'+s+'" viewBox="0 0 24 24"><path d="M12 3.2 22 20.2H2Z" fill="'+c+'" stroke="#1a1a1a" stroke-width="1.6"/></svg>';
+  return '<span class="dot" style="background:'+c+';width:'+s+'px;height:'+s+'px"></span>';
+}
+const map=L.map("map",{zoomControl:true,attributionControl:false,closePopupOnClick:false,zoomSnap:1,minZoom:19,maxZoom:19}).setView([43.11124,-123.37774],19);
+L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:19}).addTo(map);
+PLACES.forEach(place=>{ const probe=document.createElement("span"); probe.className="place"; probe.textContent=place.label; probe.style.position="absolute"; probe.style.visibility="hidden"; document.body.appendChild(probe); const w=Math.ceil(probe.offsetWidth); const h=Math.ceil(probe.offsetHeight); document.body.removeChild(probe); const extra=place.id==="reception"?" place-sm":""; L.marker(P[place.id],{interactive:false,keyboard:false,icon:L.divIcon({className:"place-wrap",html:'<span class="place'+extra+'">'+place.label+"</span>",iconSize:[w,h],iconAnchor:[Math.round(w/2),Math.round(h/2)]})}).addTo(map); });
+const layer=L.layerGroup().addTo(map);
+const PAD={ceremony:[-0.00010,0],grooms:[-0.00010,0],bride:[-0.00010,0],firstLook:[-0.000028,0],reception:[-0.00012,0],pool:[0,0]};
+function pos(at,i,n){ const base=P[at]; const pad=PAD[at]||[0,0]; const origin=[base[0]+pad[0],base[1]+pad[1]]; const spread=n<=2?0.000055:0.000046; return [origin[0],origin[1]+(i-(n-1)/2)*spread]; }
+function markPerson(ll,g){ const kind=SHAPE[g]||"dot"; if(kind==="dot") return L.circleMarker(ll,{radius:24,color:"#1a1a1a",weight:2,fillColor:COLORS[g],fillOpacity:1,interactive:false}); return L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:"icon-wrap",html:symbolHtml(g,48),iconSize:[48,48],iconAnchor:[24,24]})}); }
+function bullets(slot){ const groups={}; slot.people.forEach(p=>{ const place=WHERE[p.at]||p.at; if(!groups[place]) groups[place]=[]; const name=WHO[p.g]||p.g; if(!groups[place].includes(name)) groups[place].push(name); }); document.getElementById("who").innerHTML='<div class="when">'+slot.time+"</div><ul>"+Object.keys(groups).map(place=>"<li>"+groups[place].join(", ")+" at "+place+"</li>").join("")+"</ul>"; }
+function show(slot){ layer.clearLayers(); const byPlace={}; slot.people.forEach(p=>{ if(!byPlace[p.at]) byPlace[p.at]=[]; byPlace[p.at].push(p); }); Object.keys(byPlace).forEach(at=>{ const group=byPlace[at]; group.forEach((p,i)=>markPerson(pos(at,i,group.length),p.g).addTo(layer)); }); document.querySelectorAll(".times button").forEach(b=>b.classList.toggle("on",b.dataset.id===slot.id)); bullets(slot); if(history.replaceState) history.replaceState(null,"","#"+slot.id); }
+const ul=document.getElementById("times");
+SLOTS.forEach(s=>{ const li=document.createElement("li"); const b=document.createElement("button"); b.dataset.id=s.id; b.innerHTML='<span class="t">'+s.time+'</span><span class="n">'+s.blurb+'</span><div class="marks">'+s.people.map(p=>symbolHtml(p.g,28)).join("")+"</div>"; b.onclick=function(){ show(s); }; li.appendChild(b); ul.appendChild(li); });
+const legend=document.getElementById("legend");
+LEGEND.forEach(([k,name])=>{ const span=document.createElement("span"); span.innerHTML=symbolHtml(k,24)+name; legend.appendChild(span); });
+const start=SLOTS.find(s=>s.id===location.hash.slice(1))||SLOTS[0]; show(start);
+function lockFrame(){ map.invalidateSize(); map.fitBounds(L.latLngBounds([P.ceremony,P.grooms,P.bride,P.firstLook,P.reception,P.pool]),{padding:[8,8],maxZoom:19,animate:false}); }
+setTimeout(lockFrame,200); window.addEventListener("resize",lockFrame);
+</script>
 </body>
 </html>
