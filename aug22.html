@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aug 22 — Concord Estate</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      --ink: #1b1520;
+      --paper: #f6f1e8;
+      --gold: #c4a35a;
+      --purple: #7b3fa0;
+      --red: #c0392b;
+      --groom: #2c4a6e;
+      --don: #1e3a5f;
+      --photo: #3d5a40;
+      --vendor: #b8860b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: "Iowan Old Style", Palatino, Georgia, serif; background: var(--ink); color: var(--paper); }
+    #app { display: flex; height: 100%; }
+    aside {
+      width: 340px;
+      min-width: 270px;
+      overflow: auto;
+      padding: 18px 16px 32px;
+      background: #161018;
+      border-right: 1px solid #3a2f28;
+    }
+    h1 { font-size: 1.38rem; margin: 0 0 4px; letter-spacing: .02em; }
+    .sub { color: #c9b8a0; font-size: .82rem; margin: 0 0 14px; line-height: 1.35; }
+    h2 {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--gold);
+      margin: 18px 0 8px;
+    }
+    .times { list-style: none; margin: 0; padding: 0; }
+    .times button {
+      width: 100%;
+      text-align: left;
+      background: #221c24;
+      color: var(--paper);
+      border: 1px solid #3a3036;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      font: inherit;
+    }
+    .times button:hover,
+    .times button.on { background: #3a2a44; border-color: var(--gold); }
+    .times .t { display: block; font-weight: 700; color: var(--gold); font-size: .78rem; }
+    .times .n { display: block; font-size: .94rem; }
+    .times .marks { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+    .chip { font-size: .68rem; padding: 1px 6px; border-radius: 999px; background: #2a2430; }
+    .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; font-size: .84rem; }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .tri {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 11px solid var(--vendor);
+      display: inline-block;
+    }
+    #map { flex: 1; }
+    .leaflet-tooltip.who { font-family: inherit; font-weight: 700; }
+    .leaflet-tooltip.place { font-family: inherit; font-size: 11px; opacity: .92; }
+    .mk { width: 28px; height: 28px; display: grid; place-items: center; filter: drop-shadow(0 1px 2px #0008); }
+    .mk svg { width: 26px; height: 26px; }
+    .note { font-size: .78rem; color: #c9b8a0; margin-top: 16px; line-height: 1.4; }
+    @media (max-width: 720px) {
+      #app { flex-direction: column; }
+      aside { width: 100%; height: 44%; }
+      #map { height: 56%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <aside>
+      <h1>Aug 22 — Concord Estate</h1>
+      <p class="sub">Saturday · 2090 Roberts Mountain Rd, Roseburg · tap a time to see who is where</p>
+      <h2>Times</h2>
+      <ul class="times" id="times"></ul>
+      <h2>Who</h2>
+      <div class="legend">
+        <span>
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#7b3fa0" d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9H5zm0 2h14v2H5z"/></svg>
+          Raechell
+        </span>
+        <span><i class="dot" style="background:#1e3a5f"></i> Don</span>
+        <span><i class="dot" style="background:#2c4a6e"></i> Grooms</span>
+        <span><i class="dot" style="background:#c0392b"></i> Kathy</span>
+        <span>
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#3d5a40" d="M9 4h6l1 2h4v14H4V6h4l1-2zm3 14a5 5 0 100-10 5 5 0 000 10z"/></svg>
+          Photo
+        </span>
+        <span><i class="tri"></i> DJ</span>
+        <span><i class="tri"></i> Caterer</span>
+        <span><i class="tri"></i> Flowers</span>
+        <span><i class="tri"></i> Bar</span>
+      </div>
+      <p class="note">4:00 bartender at the pool · catering at reception · golden hour is couple + photographer only.</p>
+    </aside>
+    <div id="map"></div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const house = [43.11295, -123.37999];
+    const spots = {
+      ready: [43.11312, -123.38018],
+      grooms: [43.11278, -123.38022],
+      first: [43.11328, -123.37955],
+      ceremony: [43.11342, -123.37920],
+      reception: [43.11288, -123.37970],
+      pool: [43.11255, -123.37945],
+      views: [43.11355, -123.37895],
+      kitchen: [43.11270, -123.38005],
+      dance: [43.11295, -123.37962]
+    };
+    const places = [
+      { name: "House", ll: house },
+      { name: "Ceremony", ll: spots.ceremony },
+      { name: "Reception", ll: spots.reception },
+      { name: "Pool", ll: spots.pool }
+    ];
+    const people = {
+      raechell: { label: "Raechell", kind: "crown", color: "#7b3fa0" },
+      don: { label: "Don", kind: "dot", color: "#1e3a5f" },
+      grooms: { label: "Grooms", kind: "dot", color: "#2c4a6e" },
+      kathy: { label: "Kathy", kind: "dot", color: "#c0392b" },
+      photo: { label: "Photo", kind: "cam", color: "#3d5a40" },
+      dj: { label: "DJ", kind: "tri", color: "#b8860b" },
+      caterer: { label: "Caterer", kind: "tri", color: "#b8860b" },
+      flowers: { label: "Flowers", kind: "tri", color: "#b8860b" },
+      bar: { label: "Bar", kind: "tri", color: "#b8860b" }
+    };
+    const slots = [
+      { t: "9:00", n: "Vendor load-in", who: { flowers: "ceremony", caterer: "kitchen", dj: "dance" } },
+      { t: "10:00", n: "Getting ready", who: { raechell: "ready", kathy: "ready", photo: "ready" } },
+      { t: "11:00", n: "Grooms ready", who: { don: "grooms", grooms: "grooms", photo: "grooms" } },
+      { t: "12:00", n: "First look", who: { raechell: "first", don: "first", photo: "first" } },
+      { t: "12:30", n: "Party portraits", who: { raechell: "views", don: "views", grooms: "views", kathy: "views", photo: "views" } },
+      { t: "1:30", n: "Guests arrive", who: { flowers: "ceremony", kathy: "ceremony" } },
+      { t: "2:00", n: "Ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony" } },
+      { t: "2:30", n: "Receiving line", who: { raechell: "reception", don: "reception", kathy: "reception", photo: "reception" } },
+      { t: "3:00", n: "Family photos", who: { raechell: "views", don: "views", grooms: "views", kathy: "views", photo: "views" } },
+      { t: "4:00", n: "Bar + catering", who: { bar: "pool", caterer: "reception", dj: "dance", flowers: "reception" } },
+      { t: "5:00", n: "Reception dinner", who: { raechell: "reception", don: "reception", grooms: "reception", kathy: "reception", caterer: "reception", bar: "pool", dj: "dance" } },
+      { t: "6:30", n: "Dancing", who: { raechell: "dance", don: "dance", grooms: "dance", kathy: "dance", dj: "dance", bar: "pool" } },
+      { t: "7:00", n: "Golden hour", who: { raechell: "views", don: "views", photo: "views" } },
+      { t: "8:00", n: "Send-off", who: { raechell: "reception", don: "reception", kathy: "reception", photo: "reception" } }
+    ];
+
+    function iconFor(p) {
+      const svg = {
+        crown: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9H5zm0 2h14v2H5z"/></svg>`,
+        cam: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M9 4h6l1.2 2H20v14H4V6h4.8L9 4zm3 13a4 4 0 100-8 4 4 0 000 8z"/></svg>`,
+        tri: `<svg viewBox="0 0 24 24"><path fill="${p.color}" d="M12 3l10 18H2L12 3z"/></svg>`,
+        dot: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="${p.color}"/></svg>`
+      }[p.kind];
+      return L.divIcon({
+        className: "",
+        html: `<div class="mk">${svg}</div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+    }
+
+    const map = L.map("map", { zoomControl: true }).setView(house, 18);
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Tiles © Esri",
+      maxZoom: 19
+    }).addTo(map);
+    L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 19
+    }).addTo(map);
+
+    places.forEach(function (p) {
+      L.circleMarker(p.ll, { radius: 4, color: "#c4a35a", weight: 1, fillOpacity: 0.2 }).addTo(map)
+        .bindTooltip(p.name, { className: "place", permanent: true, direction: "bottom", offset: [0, 6] });
+    });
+
+    const layer = L.layerGroup().addTo(map);
+    let current = 9;
+
+    function draw(i) {
+      current = i;
+      layer.clearLayers();
+      const slot = slots[i];
+      const used = {};
+      Object.entries(slot.who).forEach(function (entry) {
+        const key = entry[0];
+        const loc = entry[1];
+        const p = people[key];
+        const ll = spots[loc];
+        const n = used[loc] || 0;
+        used[loc] = n + 1;
+        const jitter = [ll[0] + n * 0.000045, ll[1] + n * 0.00006];
+        L.marker(jitter, { icon: iconFor(p) }).addTo(layer)
+          .bindTooltip(p.label, { className: "who", permanent: true, direction: "top", offset: [0, -10] });
+      });
+      document.querySelectorAll(".times button").forEach(function (b, idx) {
+        b.classList.toggle("on", idx === i);
+      });
+    }
+
+    const ul = document.getElementById("times");
+    slots.forEach(function (s, i) {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      const marks = Object.keys(s.who).map(function (k) {
+        return `<span class="chip">${people[k].label}</span>`;
+      }).join("");
+      b.innerHTML = `<span class="t">${s.t}</span><span class="n">${s.n}</span><span class="marks">${marks}</span>`;
+      b.onclick = function () { draw(i); };
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    draw(current);
+  </script>
+</body>
+</html>
