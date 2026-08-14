@@ -63,7 +63,7 @@
     .times .marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
     .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; font-size: .84rem; }
     .legend span { display: flex; align-items: center; gap: 6px; }
-    .sym svg, .legend svg, .marks svg, .who-row svg { width: 27px; height: 27px; display: block; }
+    .sym svg, .legend svg, .marks svg, .who-row svg { width: 54px; height: 54px; display: block; }
     .who-row { display: flex; gap: 6px; align-items: center; filter: drop-shadow(0 1px 2px #0008); }
     #who {
       margin: 10px 0 4px;
@@ -73,7 +73,7 @@
       border-radius: 8px;
       color: var(--paper);
     }
-    #who h3 { margin: 0 0 8px; font-size: 1rem; color: var(--gold); }
+    #who > div { margin: 0 0 8px; font-size: 1rem; font-weight: 700; color: var(--gold); }
     #who ul { margin: 0; padding-left: 1.15em; font-size: 1rem; line-height: 1.45; }
     #who li { margin: 0 0 6px; }
     #map-clip {
@@ -153,10 +153,11 @@
     ];
     const people = {
       raechell: { label: "Raechell", kind: "crown", color: "#7C3AED" },
-      bridesmaids: { label: "Bridesmaids", kind: "dot", color: "#F9A8D4" },
       don: { label: "Don", kind: "dot", color: "#1E3A8A" },
+      bridesmaids: { label: "Bridesmaids", kind: "dot", color: "#F9A8D4" },
       grooms: { label: "Grooms", kind: "dot", color: "#38BDF8" },
       kathy: { label: "Kathy", kind: "dot", color: "#E11D48" },
+      stevah: { label: "Stevah", kind: "dot", color: "#9CA3AF" },
       photo: { label: "Photo", kind: "cam", color: "#F59E0B" },
       dj: { label: "DJ", kind: "tri", color: "#F97316" },
       caterer: { label: "Caterer", kind: "tri", color: "#0D9488" },
@@ -164,16 +165,16 @@
       bar: { label: "Bar", kind: "tri", color: "#EAB308" }
     };
     const slots = [
-      { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: { raechell: "bride", kathy: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", caterer: "reception", bar: "reception", dj: "reception" }, notes: ["Raechell and Kathy getting ready at the bride side", "Don and the grooms at the grooms side", "Flowers at ceremony", "DJ on tables, cloths, and chairs at reception", "Catering and bar at reception"] },
-      { t: "9:30–11:00", n: "Getting-ready photos", who: { raechell: "bride", kathy: "bride", photo: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", dj: "reception" }, notes: ["Photo with Raechell and Kathy at the bride side", "Photo with Don and the grooms at the grooms side", "Flowers still at ceremony", "DJ still on tables at reception"] },
-      { t: "11:15", n: "First look — Donnie and Raechell", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", grooms: "grooms", kathy: "reception", dj: "reception" }, notes: ["Donnie and Raechell with photo at first look", "Grooms stay at grooms", "Kathy and DJ at reception"] },
-      { t: "11:25–12:00", n: "Couple, then Judy and Stevah", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", kathy: "firstLook", grooms: "grooms", dj: "reception" }, notes: ["Don and Raechell first, then Judy and Stevah, with photo at first look", "Grooms at grooms", "DJ at reception"] },
-      { t: "12:10–1:15", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: { raechell: "firstLook", don: "firstLook", grooms: "firstLook", kathy: "firstLook", photo: "firstLook", caterer: "reception", bar: "reception" }, notes: ["Don and Raechell first, then the bride and groom party, then parents and relatives, at first look with photo", "Catering in at 1, bar at reception"] },
-      { t: "1:30–2:00", n: "Guests arrive, get seated, ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony", dj: "ceremony", flowers: "ceremony", caterer: "reception", bar: "reception" }, notes: ["Couple, wedding party, Kathy, Stevah if shown, photo, DJ, and flowers at ceremony", "Catering and bar stay at reception"] },
-      { t: "2:15–2:30", n: "Don and Raechell first, then greeting and starting seating", who: { raechell: "reception", don: "reception", photo: "reception", caterer: "reception", bar: "reception", dj: "reception" }, notes: ["Don and Raechell first at reception, then greeting and starting seating", "Photo, catering, bar, DJ at reception"] },
-      { t: "3:15", n: "Dinner — Tables called one at a time", who: { raechell: "reception", don: "reception", caterer: "reception", bar: "reception", dj: "reception" }, notes: ["Tables called one at a time at reception", "Couple, catering, bar, DJ there"] },
-      { t: "4:00", n: "After dinner — Guests out by the pool", who: { raechell: "pool", don: "pool", photo: "pool", dj: "pool", bar: "pool", caterer: "reception" }, notes: ["Guests out by the pool", "Bartender on the pool deck", "Catering stays at reception", "DJ at the pool"] },
-      { t: "6:30", n: "Golden hour — Last portraits", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" }, notes: ["Don, Raechell, and photographer only", "Last portraits"] }
+      { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: [["raechell","bride"],["bridesmaids","bride"],["don","grooms"],["grooms","grooms"],["flowers","ceremony"],["kathy","reception"],["bar","reception"],["dj","reception"]], notes: ["Raechell, Bridesmaids at Bride", "Don, Grooms at Grooms", "Flowers at Ceremony", "Kathy, Bar, DJ at Reception"] },
+      { t: "9:30–11:00", n: "Getting-ready photos", who: [["raechell","bride"],["bridesmaids","bride"],["photo","bride"],["don","grooms"],["grooms","grooms"],["photo","grooms"],["flowers","ceremony"],["kathy","reception"],["dj","reception"]], notes: ["Raechell, Bridesmaids, Photo at Bride", "Don, Grooms, Photo at Grooms", "Flowers at Ceremony", "Kathy, DJ at Reception"] },
+      { t: "11:15", n: "First look — Donnie and Raechell", who: [["raechell","firstLook"],["don","firstLook"],["photo","firstLook"],["bridesmaids","bride"],["grooms","grooms"],["kathy","reception"],["dj","reception"]], notes: ["Raechell, Don, Photo at first look", "Bridesmaids at Bride", "Grooms at Grooms", "Kathy, DJ at Reception"] },
+      { t: "11:25–12:00", n: "Couple, then Judy and Stevah", who: [["raechell","firstLook"],["don","firstLook"],["stevah","firstLook"],["photo","firstLook"],["bridesmaids","bride"],["grooms","grooms"],["kathy","reception"],["dj","reception"]], notes: ["Raechell, Don, Stevah, Photo at first look", "Bridesmaids at Bride", "Grooms at Grooms", "Kathy, DJ at Reception"] },
+      { t: "12:10–1:15", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: [["raechell","firstLook"],["don","firstLook"],["bridesmaids","firstLook"],["grooms","firstLook"],["stevah","firstLook"],["kathy","firstLook"],["photo","firstLook"],["caterer","reception"],["bar","reception"]], notes: ["Raechell, Don, Bridesmaids, Grooms, Stevah, Kathy, Photo at first look", "Caterer, Bar at Reception"] },
+      { t: "1:30–2:00", n: "Guests arrive, get seated, ceremony", who: [["raechell","ceremony"],["don","ceremony"],["bridesmaids","ceremony"],["grooms","ceremony"],["stevah","ceremony"],["kathy","ceremony"],["photo","ceremony"],["dj","ceremony"],["flowers","ceremony"],["caterer","reception"],["bar","reception"]], notes: ["Raechell, Don, Bridesmaids, Grooms, Stevah, Kathy, Photo, DJ, Flowers at Ceremony", "Caterer, Bar at Reception"] },
+      { t: "2:15–2:30", n: "Don and Raechell first, then greeting and starting seating", who: [["raechell","reception"],["don","reception"],["photo","reception"],["caterer","reception"],["bar","reception"],["dj","reception"]], notes: ["Raechell, Don, Photo, Caterer, Bar, DJ at Reception"] },
+      { t: "3:15", n: "Dinner — Tables called one at a time", who: [["raechell","reception"],["don","reception"],["caterer","reception"],["bar","reception"],["dj","reception"]], notes: ["Raechell, Don, Caterer, Bar, DJ at Reception"] },
+      { t: "4:00", n: "After dinner — Guests out by the pool", who: [["raechell","pool"],["don","pool"],["photo","pool"],["dj","pool"],["bar","pool"],["caterer","reception"]], notes: ["Raechell, Don, Photo, DJ, Bar at Pool", "Caterer at Reception"] },
+      { t: "6:30", n: "Golden hour — Last portraits", who: [["raechell","ceremony"],["don","ceremony"],["photo","ceremony"]], notes: ["Raechell, Don, Photo at Ceremony"] }
     ];
 
     function svgFor(p) {
@@ -219,19 +220,19 @@
       layer.clearLayers();
       const slot = slots[i];
       const byLoc = {};
-      Object.entries(slot.who).forEach(function (entry) {
+      slot.who.forEach(function (entry) {
         const loc = entry[1];
         (byLoc[loc] = byLoc[loc] || []).push(people[entry[0]]);
       });
       Object.keys(byLoc).forEach(function (loc) {
         const list = byLoc[loc];
-        const w = list.length * 33 - 6;
+        const w = list.length * 60 - 6;
         L.marker(spots[loc], {
           icon: L.divIcon({
             className: "",
             html: `<div class="who-row">${list.map(svgFor).join("")}</div>`,
-            iconSize: [w, 27],
-            iconAnchor: [w / 2, -14]
+            iconSize: [w, 54],
+            iconAnchor: [w / 2, -16]
           }),
           interactive: false
         }).addTo(layer);
@@ -240,7 +241,7 @@
         b.classList.toggle("on", idx === i);
       });
       const box = document.getElementById("who");
-      box.innerHTML = `<h3>${slot.t} ${slot.n}</h3><ul>${slot.notes.map(function (line) {
+      box.innerHTML = `<div>${slot.t}</div><ul>${slot.notes.map(function (line) {
         return `<li>${line}</li>`;
       }).join("")}</ul>`;
     }
@@ -257,7 +258,11 @@
     slots.forEach(function (s, i) {
       const li = document.createElement("li");
       const b = document.createElement("button");
-      const marks = Object.keys(s.who).map(function (k) {
+      const seen = {};
+      const marks = s.who.map(function (entry) {
+        const k = entry[0];
+        if (seen[k]) return "";
+        seen[k] = true;
         return svgFor(people[k]);
       }).join("");
       b.innerHTML = `<span class="t">${s.t}</span><span class="n">${s.n}</span><span class="marks">${marks}</span>`;
