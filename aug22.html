@@ -63,8 +63,19 @@
     .times .marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
     .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; font-size: .84rem; }
     .legend span { display: flex; align-items: center; gap: 6px; }
-    .sym svg, .legend svg, .marks svg, .who-row svg { width: 18px; height: 18px; display: block; }
+    .sym svg, .legend svg, .marks svg, .who-row svg { width: 27px; height: 27px; display: block; }
     .who-row { display: flex; gap: 6px; align-items: center; filter: drop-shadow(0 1px 2px #0008); }
+    #who {
+      margin: 10px 0 4px;
+      padding: 12px 14px;
+      background: #2a2230;
+      border: 1px solid #c4a35a;
+      border-radius: 8px;
+      color: var(--paper);
+    }
+    #who h3 { margin: 0 0 8px; font-size: 1rem; color: var(--gold); }
+    #who ul { margin: 0; padding-left: 1.15em; font-size: 1rem; line-height: 1.45; }
+    #who li { margin: 0 0 6px; }
     #map { flex: 1; overflow: hidden; }
     #map .leaflet-map-pane { transform: scale(2.1); transform-origin: 50% 42%; }
     .leaflet-tooltip.place { font-family: inherit; font-size: 11px; font-weight: 700; opacity: .95; }
@@ -96,6 +107,7 @@
       <p class="sub">Saturday · 2090 Roberts Mountain Rd, Roseburg, OR · tap a time to see who is where</p>
       <h2>Times</h2>
       <ul class="times" id="times"></ul>
+      <div id="who"></div>
       <h2>Who</h2>
       <div class="legend" id="legend"></div>
       <p class="note">4:00 bartender at the pool · catering at reception · golden hour is couple + photographer only.</p>
@@ -139,16 +151,16 @@
       bar: { label: "Bar", kind: "tri", color: "#EAB308" }
     };
     const slots = [
-      { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: { raechell: "bride", kathy: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", caterer: "reception", bar: "reception", dj: "reception" } },
-      { t: "9:30–11:00", n: "Getting-ready photos", who: { raechell: "bride", kathy: "bride", photo: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", dj: "reception" } },
-      { t: "11:15", n: "First look — Donnie and Raechell", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", grooms: "grooms", kathy: "reception", dj: "reception" } },
-      { t: "11:25–12:00", n: "Couple, then Judy and Stevah", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", kathy: "firstLook", grooms: "grooms", dj: "reception" } },
-      { t: "12:10–1:15", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: { raechell: "firstLook", don: "firstLook", grooms: "firstLook", kathy: "firstLook", photo: "firstLook", caterer: "reception", bar: "reception" } },
-      { t: "1:30–2:00", n: "Guests arrive, get seated, ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony", dj: "ceremony", flowers: "ceremony", caterer: "reception", bar: "reception" } },
-      { t: "2:15–2:30", n: "Don and Raechell first, then greeting and starting seating", who: { raechell: "reception", don: "reception", photo: "reception", caterer: "reception", bar: "reception", dj: "reception" } },
-      { t: "3:15", n: "Dinner — Tables called one at a time", who: { raechell: "reception", don: "reception", caterer: "reception", bar: "reception", dj: "reception" } },
-      { t: "4:00", n: "After dinner — Guests out by the pool", who: { raechell: "pool", don: "pool", photo: "pool", dj: "pool", bar: "pool", caterer: "reception" } },
-      { t: "6:30", n: "Golden hour — Last portraits", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" } }
+      { t: "9:00", n: "Arrive — Get ready. DJ on tables, cloths, chairs.", who: { raechell: "bride", kathy: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", caterer: "reception", bar: "reception", dj: "reception" }, notes: ["Raechell and Kathy getting ready at the bride side", "Don and the grooms at the grooms side", "Flowers at ceremony", "DJ on tables, cloths, and chairs at reception", "Catering and bar at reception"] },
+      { t: "9:30–11:00", n: "Getting-ready photos", who: { raechell: "bride", kathy: "bride", photo: "bride", don: "grooms", grooms: "grooms", flowers: "ceremony", dj: "reception" }, notes: ["Photo with Raechell and Kathy at the bride side", "Photo with Don and the grooms at the grooms side", "Flowers still at ceremony", "DJ still on tables at reception"] },
+      { t: "11:15", n: "First look — Donnie and Raechell", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", grooms: "grooms", kathy: "reception", dj: "reception" }, notes: ["Donnie and Raechell with photo at first look", "Grooms stay at grooms", "Kathy and DJ at reception"] },
+      { t: "11:25–12:00", n: "Couple, then Judy and Stevah", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook", kathy: "firstLook", grooms: "grooms", dj: "reception" }, notes: ["Don and Raechell first, then Judy and Stevah, with photo at first look", "Grooms at grooms", "DJ at reception"] },
+      { t: "12:10–1:15", n: "Don and Raechell first, then the bride and groom party, then parents and relatives", who: { raechell: "firstLook", don: "firstLook", grooms: "firstLook", kathy: "firstLook", photo: "firstLook", caterer: "reception", bar: "reception" }, notes: ["Don and Raechell first, then the bride and groom party, then parents and relatives, at first look with photo", "Catering in at 1, bar at reception"] },
+      { t: "1:30–2:00", n: "Guests arrive, get seated, ceremony", who: { raechell: "ceremony", don: "ceremony", grooms: "ceremony", kathy: "ceremony", photo: "ceremony", dj: "ceremony", flowers: "ceremony", caterer: "reception", bar: "reception" }, notes: ["Couple, wedding party, Kathy, Stevah if shown, photo, DJ, and flowers at ceremony", "Catering and bar stay at reception"] },
+      { t: "2:15–2:30", n: "Don and Raechell first, then greeting and starting seating", who: { raechell: "reception", don: "reception", photo: "reception", caterer: "reception", bar: "reception", dj: "reception" }, notes: ["Don and Raechell first at reception, then greeting and starting seating", "Photo, catering, bar, DJ at reception"] },
+      { t: "3:15", n: "Dinner — Tables called one at a time", who: { raechell: "reception", don: "reception", caterer: "reception", bar: "reception", dj: "reception" }, notes: ["Tables called one at a time at reception", "Couple, catering, bar, DJ there"] },
+      { t: "4:00", n: "After dinner — Guests out by the pool", who: { raechell: "pool", don: "pool", photo: "pool", dj: "pool", bar: "pool", caterer: "reception" }, notes: ["Guests out by the pool", "Bartender on the pool deck", "Catering stays at reception", "DJ at the pool"] },
+      { t: "6:30", n: "Golden hour — Last portraits", who: { raechell: "firstLook", don: "firstLook", photo: "firstLook" }, notes: ["Don, Raechell, and photographer only", "Last portraits"] }
     ];
 
     function svgFor(p) {
@@ -200,13 +212,13 @@
       });
       Object.keys(byLoc).forEach(function (loc) {
         const list = byLoc[loc];
-        const w = list.length * 24 - 6;
+        const w = list.length * 33 - 6;
         L.marker(spots[loc], {
           icon: L.divIcon({
             className: "",
             html: `<div class="who-row">${list.map(svgFor).join("")}</div>`,
-            iconSize: [w, 18],
-            iconAnchor: [w / 2, -12]
+            iconSize: [w, 27],
+            iconAnchor: [w / 2, -14]
           }),
           interactive: false
         }).addTo(layer);
@@ -214,6 +226,10 @@
       document.querySelectorAll(".times button").forEach(function (b, idx) {
         b.classList.toggle("on", idx === i);
       });
+      const box = document.getElementById("who");
+      box.innerHTML = `<h3>${slot.t} ${slot.n}</h3><ul>${slot.notes.map(function (line) {
+        return `<li>${line}</li>`;
+      }).join("")}</ul>`;
     }
 
     const legend = document.getElementById("legend");
