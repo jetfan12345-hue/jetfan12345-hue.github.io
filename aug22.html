@@ -38,6 +38,7 @@
     border-radius: 8px; background: #221c24; font-family: system-ui, sans-serif; font-size: 14px;
   }
   .who-box .when { font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .who-box .n { margin-bottom: 6px; }
   .who-box ul { margin: 0; padding-left: 18px; }
   .who-box li { margin: 3px 0; }
   .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; font-size: .84rem; font-family: system-ui, sans-serif; }
@@ -85,7 +86,7 @@ const COLORS = {
 const LEGEND = [["bride","Raechell"],["bridesmaids","Maids"],["groom","Donnie"],["groomsmen","Grooms"],["photographers","Photo"],["dj","DJ"],["stevah","Stevah"],["caterer","Catering"],["flower","Flowers"],["kathy","Kathy"],["bartenders","Bar"]];
 const SHAPE = { bride:"crown", photographers:"camera", dj:"tri", caterer:"tri", flower:"tri", bartenders:"tri" };
 const P = { ceremony:[43.11165,-123.37779], grooms:[43.11145,-123.37789], bride:[43.11145,-123.37777], firstLook:[43.11117,-123.37780], reception:[43.11109,-123.37823], pool:[43.11100,-123.37785] };
-const PLACES = [{id:"ceremony",label:"Ceremony"},{id:"grooms",label:"Grooms"},{id:"bride",label:"Bride"},{id:"firstLook",label:"first look"},{id:"reception",label:"Reception"},{id:"pool",label:"Pool"}];
+const PLACES = [{id:"ceremony",label:"Ceremony"},{id:"grooms",label:"Grooms"},{id:"bride",label:"Bridesmaids"},{id:"firstLook",label:"first look"},{id:"reception",label:"Reception"}];
 const WHERE = { ceremony:"Ceremony", grooms:"Grooms", bride:"Bride", firstLook:"first look", reception:"Reception", pool:"Pool" };
 const WHO = Object.fromEntries(LEGEND);
 const SLOTS = [
@@ -113,10 +114,10 @@ const layer=L.layerGroup().addTo(map);
 const PAD={ceremony:[-0.00010,0],grooms:[-0.00010,0],bride:[-0.00010,0],firstLook:[-0.000028,0],reception:[-0.00012,0],pool:[0,0]};
 function pos(at,i,n){ const base=P[at]; const pad=PAD[at]||[0,0]; const origin=[base[0]+pad[0],base[1]+pad[1]]; const spread=n<=2?0.000055:0.000046; return [origin[0],origin[1]+(i-(n-1)/2)*spread]; }
 function markPerson(ll,g){ const kind=SHAPE[g]||"dot"; if(kind==="dot") return L.circleMarker(ll,{radius:24,color:"#1a1a1a",weight:2,fillColor:COLORS[g],fillOpacity:1,interactive:false}); return L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:"icon-wrap",html:symbolHtml(g,48),iconSize:[48,48],iconAnchor:[24,24]})}); }
-function bullets(slot){ const groups={}; slot.people.forEach(p=>{ const place=WHERE[p.at]||p.at; if(!groups[place]) groups[place]=[]; const name=WHO[p.g]||p.g; if(!groups[place].includes(name)) groups[place].push(name); }); document.getElementById("who").innerHTML='<div class="when">'+slot.time+"</div><ul>"+Object.keys(groups).map(place=>"<li>"+groups[place].join(", ")+" at "+place+"</li>").join("")+"</ul>"; }
+function bullets(slot){ const groups={}; slot.people.forEach(p=>{ const place=WHERE[p.at]||p.at; if(!groups[place]) groups[place]=[]; const name=WHO[p.g]||p.g; if(!groups[place].includes(name)) groups[place].push(name); }); document.getElementById("who").innerHTML='<div class="when">'+slot.time+'</div><div class="n">'+slot.blurb+"</div><ul>"+Object.keys(groups).map(place=>"<li>"+groups[place].join(", ")+" at "+place+"</li>").join("")+"</ul>"; }
 function show(slot){ layer.clearLayers(); const byPlace={}; slot.people.forEach(p=>{ if(!byPlace[p.at]) byPlace[p.at]=[]; byPlace[p.at].push(p); }); Object.keys(byPlace).forEach(at=>{ const group=byPlace[at]; group.forEach((p,i)=>markPerson(pos(at,i,group.length),p.g).addTo(layer)); }); document.querySelectorAll(".times button").forEach(b=>b.classList.toggle("on",b.dataset.id===slot.id)); bullets(slot); const box = document.getElementById("who"); const btn = document.querySelector('.times button[data-id="'+slot.id+'"]'); if (box && btn) btn.after(box); if(history.replaceState) history.replaceState(null,"","#"+slot.id); }
 const ul=document.getElementById("times");
-SLOTS.forEach(s=>{ const li=document.createElement("li"); const b=document.createElement("button"); b.dataset.id=s.id; b.innerHTML='<span class="t">'+s.time+'</span><span class="n">'+s.blurb+'</span><div class="marks">'+s.people.map(p=>symbolHtml(p.g,28)).join("")+"</div>"; b.onclick=function(){ show(s); }; li.appendChild(b); ul.appendChild(li); });
+SLOTS.forEach(s=>{ const li=document.createElement("li"); const b=document.createElement("button"); b.dataset.id=s.id; b.innerHTML='<span class="t">'+s.time+"</span>"; b.onclick=function(){ show(s); }; li.appendChild(b); ul.appendChild(li); });
 const legend=document.getElementById("legend");
 LEGEND.forEach(([k,name])=>{ const span=document.createElement("span"); span.innerHTML=symbolHtml(k,24)+name; legend.appendChild(span); });
 const start=SLOTS.find(s=>s.id===location.hash.slice(1))||SLOTS[0]; show(start);
