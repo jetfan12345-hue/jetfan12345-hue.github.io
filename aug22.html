@@ -106,7 +106,7 @@ function symbolHtml(g,size){ const c=COLORS[g]; const kind=SHAPE[g]||"dot"; cons
   if(kind==="tri") return '<svg class="sym" width="'+s+'" height="'+s+'" viewBox="0 0 24 24"><path d="M12 3.2 22 20.2H2Z" fill="'+c+'" stroke="#1a1a1a" stroke-width="1.6"/></svg>';
   return '<span class="dot" style="background:'+c+';width:'+s+'px;height:'+s+'px"></span>';
 }
-const map=L.map("map",{dragging:false,zoomControl:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false,closePopupOnClick:false,zoomSnap:1,minZoom:19,maxZoom:19}).setView([43.11124,-123.37774],19);
+const map=L.map("map",{dragging:false,zoomControl:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false,closePopupOnClick:false,zoomSnap:1,minZoom:18,maxZoom:18}).setView([43.11124,-123.37774],18);
 L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:19}).addTo(map);
 PLACES.forEach(place=>{ const probe=document.createElement("span"); probe.className="place"; probe.textContent=place.label; probe.style.position="absolute"; probe.style.visibility="hidden"; document.body.appendChild(probe); const w=Math.ceil(probe.offsetWidth); const h=Math.ceil(probe.offsetHeight); document.body.removeChild(probe); const extra=place.id==="reception"?" place-sm":""; L.marker(P[place.id],{interactive:false,keyboard:false,icon:L.divIcon({className:"place-wrap",html:'<span class="place'+extra+'">'+place.label+"</span>",iconSize:[w,h],iconAnchor:[Math.round(w/2),Math.round(h/2)]})}).addTo(map); });
 const layer=L.layerGroup().addTo(map);
@@ -120,7 +120,7 @@ SLOTS.forEach(s=>{ const li=document.createElement("li"); const b=document.creat
 const legend=document.getElementById("legend");
 LEGEND.forEach(([k,name])=>{ const span=document.createElement("span"); span.innerHTML=symbolHtml(k,24)+name; legend.appendChild(span); });
 const start=SLOTS.find(s=>s.id===location.hash.slice(1))||SLOTS[0]; show(start);
-function lockFrame(){ map.invalidateSize(); map.fitBounds(L.latLngBounds([P.ceremony,P.grooms,P.bride,P.firstLook,P.reception,P.pool]),{padding:[8,8],maxZoom:19,animate:false}); }
+function lockFrame(){ map.invalidateSize(); map.fitBounds(L.latLngBounds([P.ceremony,P.grooms,P.bride,P.firstLook,P.reception,P.pool]),{padding:[8,8],maxZoom:18,animate:false}); }
 setTimeout(lockFrame,200); window.addEventListener("resize",function(){ map.invalidateSize(); });
 </script>
 </body>
