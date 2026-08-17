@@ -256,11 +256,6 @@ h1 {
   margin-bottom: 0.75rem;
 }
 
-.compare-card.reality {
-  border-color: #e0c080;
-  background: #fffdf5;
-}
-
 .compare-card figcaption { color: var(--muted); font-size: 0.95rem; }
 
 .specs {

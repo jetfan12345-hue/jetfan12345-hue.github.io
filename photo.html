@@ -1,201 +1,516 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Aug 22 — Photo</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<style>
-  :root {
-    --ink: #1b1520;
-    --paper: #f6f1e8;
-    --gold: #c4a35a;
-    --line: #3a2f28;
-    --cam: #F59E0B;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; height: 100dvh; font-family: Georgia, "Iowan Old Style", Palatino, serif; background: var(--ink); color: var(--paper); }
-  #app { display: flex; height: 100%; }
-  aside {
-    width: 340px; min-width: 280px; overflow: auto;
-    padding: 16px 14px calc(20px + env(safe-area-inset-bottom));
-    background: #161018; border-right: 1px solid var(--line);
-  }
-  h1 { font-size: 1.28rem; margin: 0 0 2px; }
-  .sub { color: #c9b8a0; font-size: .8rem; margin: 0 0 12px; line-height: 1.35; }
-  h2 { font-size: .7rem; text-transform: uppercase; letter-spacing: .14em; color: var(--gold); margin: 14px 0 8px; }
-  .legend { display: flex; gap: 14px; font-size: .84rem; font-family: system-ui, sans-serif; }
-  .legend span { display: flex; align-items: center; gap: 8px; }
-  .sym { display: block; filter: drop-shadow(0 1px 2px #0008); }
-  .tabs { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
-  .tabs button {
-    min-height: 40px; padding: 7px 10px; text-align: left;
-    background: #221c24; color: var(--paper);
-    border: 1px solid #3a3036; border-radius: 8px;
-    cursor: pointer; font: inherit; -webkit-tap-highlight-color: transparent;
-  }
-  .tabs button:hover, .tabs button.on { background: #3a2a44; border-color: var(--gold); }
-  .tabs .t { display: block; font-weight: 700; color: var(--gold); font-size: .72rem; }
-  .tabs .n { display: block; font-size: .78rem; margin-top: 1px; }
-  .who-box {
-    margin-top: 8px; padding: 10px 12px; border: 1px solid var(--gold);
-    border-radius: 8px; background: #221c24; font-family: system-ui, sans-serif; font-size: 14px;
-  }
-  .who-box .when { font-weight: 700; color: var(--gold); margin-bottom: 6px; }
-  .who-box .n { margin-bottom: 6px; }
-  .who-box ul { margin: 0; padding-left: 18px; }
-  .who-box li { margin: 3px 0; }
-  #map-clip { flex: 1; min-width: 0; overflow: hidden; position: relative; background: #1a1a14; }
-  #map { position: absolute; width: 100%; height: 100%; left: 0; top: 0; }
-  .place-wrap, .icon-wrap { background: none !important; border: none !important; }
-  .place {
-    display: inline-block; background: rgba(251,248,244,.94); border: 1px solid #2b2118;
-    padding: 2px 7px; font: 12px/1.2 system-ui, sans-serif; color: #2b2118; white-space: nowrap;
-  }
-  .place-sm { font-size: 11px; padding: 1px 5px; }
-  .leaflet-tooltip, .leaflet-popup, .leaflet-control-attribution, .leaflet-marker-shadow { display: none !important; }
-  .note { font-size: .75rem; color: #c9b8a0; margin-top: 12px; line-height: 1.35; }
-  @media (max-width: 720px) {
-    #app { flex-direction: column; }
-    aside { width: 100%; height: 48%; border-right: 0; border-top: 1px solid var(--line); }
-    #map-clip { height: 52%; min-height: 240px; }
-    .tabs button { min-height: 44px; }
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Aug 22 — Photo</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      --ink: #1b1520;
+      --paper: #f6f1e8;
+      --gold: #c4a35a;
+      --line: #3a2f28;
+      --cam: #F59E0B;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      height: 100dvh;
+      font-family: Georgia, "Iowan Old Style", Palatino, serif;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    #app { display: flex; height: 100%; }
+
+    aside {
+      width: 340px;
+      min-width: 280px;
+      overflow: auto;
+      padding: 16px 14px calc(20px + env(safe-area-inset-bottom));
+      background: #161018;
+      border-right: 1px solid var(--line);
+    }
+
+    h1 { font-size: 1.28rem; margin: 0 0 2px; }
+
+    .sub {
+      color: #c9b8a0;
+      font-size: 0.8rem;
+      margin: 0 0 12px;
+      line-height: 1.35;
+    }
+
+    h2 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin: 14px 0 8px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      font-size: 0.84rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    .legend span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sym {
+      display: block;
+      filter: drop-shadow(0 1px 2px #0008);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tabs button {
+      min-height: 40px;
+      padding: 7px 10px;
+      text-align: left;
+      background: #221c24;
+      color: var(--paper);
+      border: 1px solid #3a3036;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tabs button:hover,
+    .tabs button.on {
+      background: #3a2a44;
+      border-color: var(--gold);
+    }
+
+    .tabs .t {
+      display: block;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 0.72rem;
+    }
+
+    .tabs .n {
+      display: block;
+      font-size: 0.78rem;
+      margin-top: 1px;
+    }
+
+    .who-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      background: #221c24;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+    }
+
+    .who-box .when {
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .who-box .n { margin-bottom: 6px; }
+    .who-box ul { margin: 0; padding-left: 18px; }
+    .who-box li { margin: 3px 0; }
+
+    #map-clip {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      position: relative;
+      background: #1a1a14;
+    }
+
+    #map {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+    }
+
+    .place-wrap,
+    .icon-wrap {
+      background: none !important;
+      border: none !important;
+    }
+
+    .place {
+      display: inline-block;
+      background: rgba(251, 248, 244, 0.94);
+      border: 1px solid #2b2118;
+      padding: 2px 7px;
+      font: 12px/1.2 system-ui, sans-serif;
+      color: #2b2118;
+      white-space: nowrap;
+    }
+
+    .place-sm { font-size: 11px; padding: 1px 5px; }
+
+    .leaflet-tooltip,
+    .leaflet-popup,
+    .leaflet-control-attribution,
+    .leaflet-marker-shadow {
+      display: none !important;
+    }
+
+    .note {
+      font-size: 0.75rem;
+      color: #c9b8a0;
+      margin-top: 12px;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 720px) {
+      #app { flex-direction: column; }
+      aside {
+        width: 100%;
+        height: 48%;
+        border-right: 0;
+        border-top: 1px solid var(--line);
+      }
+      #map-clip {
+        height: 52%;
+        min-height: 240px;
+      }
+      .tabs button { min-height: 44px; }
+    }
+  </style>
 </head>
 <body>
-<div id="app">
-  <aside>
-    <h1>Saturday Aug 22</h1>
-    <div class="sub">Concord Estate · photographer board · tap a time for shots</div>
-    <h2>Who</h2>
-    <div class="legend" id="legend"></div>
-    <h2>Times</h2>
-    <ul class="tabs" id="times"></ul>
-    <div class="who-box" id="who"></div>
-    <div class="note">From Raechell’s photo email. Original day-of page is separate and untouched.</div>
-  </aside>
-  <div id="map-clip"><div id="map"></div></div>
-</div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-const CAM = "#F59E0B";
-const P = { ceremony:[43.11165,-123.37779], grooms:[43.11145,-123.37789], bride:[43.11145,-123.37777], firstLook:[43.11117,-123.37780], reception:[43.11109,-123.37823], pool:[43.11100,-123.37785] };
-const PLACES = [{id:"ceremony",label:"Ceremony"},{id:"grooms",label:"Grooms"},{id:"bride",label:"Bridesmaids"},{id:"firstLook",label:"first look"},{id:"reception",label:"Reception"}];
-const WHERE = { ceremony:"Ceremony", grooms:"Grooms", bride:"Bride", firstLook:"first look", reception:"Reception", pool:"Pool" };
-function cameraSvg(s){
-  return '<svg class="sym" width="'+s+'" height="'+s+'" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2" fill="'+CAM+'" stroke="#1a1a1a" stroke-width="1.4"/><path d="M8 8 9.6 5h4.8L16 8" fill="'+CAM+'" stroke="#1a1a1a" stroke-width="1.4"/><circle cx="12" cy="14" r="3.1" fill="#fff" stroke="#1a1a1a" stroke-width="1.3"/></svg>';
-}
-const SLOTS = [
-  { id:"t9", time:"9:00–11:00", blurb:"Getting ready + details", cams:["bride","grooms","ceremony","pool"], shots:[
-    "Tiana at Bride: hair and makeup, bridesmaids getting ready, robes/glam, getting dressed, accessories, flat lays",
-    "Second at Grooms: Donnie and groomsmen getting ready, groom shoes/accessories",
-    "Details: dress, bride shoes, bouquet with rings, vow books + perfume/cologne",
-    "Ceremony empty: bouquets, boutonnieres, florals, arch",
-    "Empty pool"
-  ]},
-  { id:"t1100", time:"11:00", blurb:"Raechell solo · 15 min", cams:["bride","grooms"], shots:[
-    "Tiana at Bride: just Raechell, all ready, before first look",
-    "Second at Grooms: Donnie stays with groomsmen"
-  ]},
-  { id:"t1115", time:"11:15", blurb:"First look · 10 min", cams:["firstLook"], shots:[
-    "Tiana + Second at first look: Donnie’s reaction, exchange vows, VIDEO and stills"
-  ]},
-  { id:"t1125", time:"11:25–11:55", blurb:"Couple · 30 min", cams:["firstLook"], shots:[
-    "Just Raechell and Donnie, exchanging vows, under veil"
-  ]},
-  { id:"t1155", time:"11:55–12:10", blurb:"Judy and Stevah · 15 min", cams:["firstLook"], shots:[
-    "First look with dad and mom (Judy and Stevah)"
-  ]},
-  { id:"t1210", time:"12:10–12:40", blurb:"Wedding party · 30 min", cams:["firstLook"], shots:[
-    "Bridesmaids and groomsmen before ceremony",
-    "Cheyenne (MOH), Hazel, Lexi, Gwyn · Allan, Jason, Justin, Phil"
-  ]},
-  { id:"t1240", time:"12:40–12:55", blurb:"Party + family · 15 min", cams:["firstLook"], shots:[
-    "Party plus early family: aunts Kathy, Jan, Linda, mom Judy, dad Stevah"
-  ]},
-  { id:"t1255", time:"12:55–1:15", blurb:"Individuals · 15 min", cams:["firstLook"], shots:[
-    "Each bridesmaid, plus mom, plus dad"
-  ]},
-  { id:"t200", time:"2:00", blurb:"Ceremony · 5–10 min · VIDEO", cams:["ceremony"], shots:[
-    "Bridal party couples walking the aisle",
-    "Raechell walking with dad, train details",
-    "Donnie’s reaction",
-    "Altar, I do, kiss",
-    "Recessional, stop and dip kiss"
-  ]},
-  { id:"t210", time:"2:10", blurb:"Empty reception", cams:["reception"], shots:[
-    "Donnie and Raechell see the room alone first",
-    "Photographers in right after them, before guests: tables, apps, cake and cupcakes, bar"
-  ]},
-  { id:"t215", time:"2:15–3:00", blurb:"Cocktail", cams:["reception"], shots:[
-    "Empty then filled room",
-    "Centerpieces, food spread, cake and cupcakes, bar/fountain, dance floor, chandeliers, pillars, ceiling, sweetheart table",
-    "First dance VIDEO (True), father-daughter VIDEO (My Girl), couples dancing"
-  ]},
-  { id:"t315", time:"3:15", blurb:"Dinner", cams:["reception"], shots:[
-    "Family/couples at every table, smile for the bride and groom",
-    "Candid reception, wedding party and guests, whole family",
-    "Bouquet toss right after dinner, then private cake cutting"
-  ]},
-  { id:"t4", time:"4:00–4:30", blurb:"Pool", cams:["pool"], shots:[
-    "Pool party: people swimming and socializing"
-  ]},
-  { id:"t630", time:"6:30–7:00", blurb:"Golden hour", cams:["ceremony","pool"], shots:[
-    "Last portraits (couple)",
-    "Smores bar / firepit",
-    "Drone of venue with everyone at the pool and ceremony"
-  ]}
-];
-const map=L.map("map",{dragging:false,zoomControl:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false,closePopupOnClick:false,zoomSnap:1,minZoom:18,maxZoom:18}).setView([43.11124,-123.37774],18);
-L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:19}).addTo(map);
-PLACES.forEach(place=>{
-  const probe=document.createElement("span");
-  probe.className="place"; probe.textContent=place.label;
-  probe.style.position="absolute"; probe.style.visibility="hidden";
-  document.body.appendChild(probe);
-  const w=Math.ceil(probe.offsetWidth); const h=Math.ceil(probe.offsetHeight);
-  document.body.removeChild(probe);
-  const extra=place.id==="reception"?" place-sm":"";
-  L.marker(P[place.id],{interactive:false,keyboard:false,icon:L.divIcon({className:"place-wrap",html:'<span class="place'+extra+'">'+place.label+"</span>",iconSize:[w,h],iconAnchor:[Math.round(w/2),Math.round(h/2)]})}).addTo(map);
-});
-const layer=L.layerGroup().addTo(map);
-const PAD={ceremony:[-0.00010,0],grooms:[-0.00010,0],bride:[-0.00010,0],firstLook:[-0.000028,0],reception:[-0.00012,0],pool:[0,0]};
-function pos(at,i,n){ const base=P[at]; const pad=PAD[at]||[0,0]; const origin=[base[0]+pad[0],base[1]+pad[1]]; const spread=n<=2?0.000055:0.000046; return [origin[0],origin[1]+(i-(n-1)/2)*spread]; }
-function markCam(ll){ return L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:"icon-wrap",html:cameraSvg(48),iconSize:[48,48],iconAnchor:[24,24]})}); }
-function bullets(slot){
-  document.getElementById("who").innerHTML='<div class="when">'+slot.time+'</div><div class="n">'+slot.blurb+"</div><ul>"+slot.shots.map(s=>"<li>"+s+"</li>").join("")+"</ul>";
-}
-function show(slot){
-  layer.clearLayers();
-  slot.cams.forEach((at,i)=>markCam(pos(at,i,slot.cams.length)).addTo(layer));
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.id===slot.id));
-  bullets(slot);
-  const box=document.getElementById("who");
-  const btn=document.querySelector('.tabs button[data-id="'+slot.id+'"]');
-  if(box&&btn) btn.after(box);
-  if(history.replaceState) history.replaceState(null,"","#"+slot.id);
-}
-const ul=document.getElementById("times");
-SLOTS.forEach(s=>{
-  const li=document.createElement("li");
-  const b=document.createElement("button");
-  b.dataset.id=s.id;
-  b.innerHTML='<span class="t">'+s.time+'</span><span class="n">'+s.blurb.split(" · ")[0]+"</span>";
-  b.onclick=function(){ show(s); };
-  li.appendChild(b); ul.appendChild(li);
-});
-const legend=document.getElementById("legend");
-[["Tiana"],["Second"]].forEach(([name])=>{
-  const span=document.createElement("span");
-  span.innerHTML=cameraSvg(24)+name;
-  legend.appendChild(span);
-});
-const start=SLOTS.find(s=>s.id===location.hash.slice(1))||SLOTS[0];
-show(start);
-function lockFrame(){ map.invalidateSize(); map.fitBounds(L.latLngBounds([P.ceremony,P.grooms,P.bride,P.firstLook,P.reception,P.pool]),{padding:[8,8],maxZoom:18,animate:false}); }
-setTimeout(lockFrame,200);
-window.addEventListener("resize",function(){ map.invalidateSize(); });
-</script>
+  <div id="app">
+    <aside>
+      <h1>Saturday Aug 22</h1>
+      <div class="sub">Concord Estate · photographer board · tap a time for shots</div>
+      <h2>Who</h2>
+      <div class="legend" id="legend"></div>
+      <h2>Times</h2>
+      <ul class="tabs" id="times"></ul>
+      <div class="who-box" id="who"></div>
+      <div class="note">From Raechell’s photo email. Original day-of page is separate and untouched.</div>
+    </aside>
+    <div id="map-clip"><div id="map"></div></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const CAM = "#F59E0B";
+
+    const P = {
+      ceremony: [43.11165, -123.37779],
+      grooms: [43.11145, -123.37789],
+      bride: [43.11145, -123.37777],
+      firstLook: [43.11117, -123.37780],
+      reception: [43.11109, -123.37823],
+      pool: [43.11100, -123.37785],
+    };
+
+    const PLACES = [
+      { id: "ceremony", label: "Ceremony" },
+      { id: "grooms", label: "Grooms" },
+      { id: "bride", label: "Bridesmaids" },
+      { id: "firstLook", label: "first look" },
+      { id: "reception", label: "Reception" },
+    ];
+
+    function cameraSvg(s) {
+      return (
+        '<svg class="sym" width="' + s + '" height="' + s + '" viewBox="0 0 24 24">' +
+        '<rect x="3" y="8" width="18" height="12" rx="2" fill="' + CAM + '" stroke="#1a1a1a" stroke-width="1.4"/>' +
+        '<path d="M8 8 9.6 5h4.8L16 8" fill="' + CAM + '" stroke="#1a1a1a" stroke-width="1.4"/>' +
+        '<circle cx="12" cy="14" r="3.1" fill="#fff" stroke="#1a1a1a" stroke-width="1.3"/></svg>'
+      );
+    }
+
+    const SLOTS = [
+      {
+        id: "t9",
+        time: "9:00–11:00",
+        blurb: "Getting ready + details",
+        cams: ["bride", "grooms", "ceremony", "pool"],
+        shots: [
+          "Tiana at Bride: hair and makeup, bridesmaids getting ready, robes/glam, getting dressed, accessories, flat lays",
+          "Second at Grooms: Donnie and groomsmen getting ready, groom shoes/accessories",
+          "Details: dress, bride shoes, bouquet with rings, vow books + perfume/cologne",
+          "Ceremony empty: bouquets, boutonnieres, florals, arch",
+          "Empty pool",
+        ],
+      },
+      {
+        id: "t1100",
+        time: "11:00",
+        blurb: "Raechell solo · 15 min",
+        cams: ["bride", "grooms"],
+        shots: [
+          "Tiana at Bride: just Raechell, all ready, before first look",
+          "Second at Grooms: Donnie stays with groomsmen",
+        ],
+      },
+      {
+        id: "t1115",
+        time: "11:15",
+        blurb: "First look · 10 min",
+        cams: ["firstLook"],
+        shots: ["Tiana + Second at first look: Donnie’s reaction, exchange vows, VIDEO and stills"],
+      },
+      {
+        id: "t1125",
+        time: "11:25–11:55",
+        blurb: "Couple · 30 min",
+        cams: ["firstLook"],
+        shots: ["Just Raechell and Donnie, exchanging vows, under veil"],
+      },
+      {
+        id: "t1155",
+        time: "11:55–12:10",
+        blurb: "Judy and Stevah · 15 min",
+        cams: ["firstLook"],
+        shots: ["First look with dad and mom (Judy and Stevah)"],
+      },
+      {
+        id: "t1210",
+        time: "12:10–12:40",
+        blurb: "Wedding party · 30 min",
+        cams: ["firstLook"],
+        shots: [
+          "Bridesmaids and groomsmen before ceremony",
+          "Cheyenne (MOH), Hazel, Lexi, Gwyn · Allan, Jason, Justin, Phil",
+        ],
+      },
+      {
+        id: "t1240",
+        time: "12:40–12:55",
+        blurb: "Party + family · 15 min",
+        cams: ["firstLook"],
+        shots: ["Party plus early family: aunts Kathy, Jan, Linda, mom Judy, dad Stevah"],
+      },
+      {
+        id: "t1255",
+        time: "12:55–1:15",
+        blurb: "Individuals · 15 min",
+        cams: ["firstLook"],
+        shots: ["Each bridesmaid, plus mom, plus dad"],
+      },
+      {
+        id: "t200",
+        time: "2:00",
+        blurb: "Ceremony · 5–10 min · VIDEO",
+        cams: ["ceremony"],
+        shots: [
+          "Bridal party couples walking the aisle",
+          "Raechell walking with dad, train details",
+          "Donnie’s reaction",
+          "Altar, I do, kiss",
+          "Recessional, stop and dip kiss",
+        ],
+      },
+      {
+        id: "t210",
+        time: "2:10",
+        blurb: "Empty reception",
+        cams: ["reception"],
+        shots: [
+          "Donnie and Raechell see the room alone first",
+          "Photographers in right after them, before guests: tables, apps, cake and cupcakes, bar",
+        ],
+      },
+      {
+        id: "t215",
+        time: "2:15–3:00",
+        blurb: "Cocktail",
+        cams: ["reception"],
+        shots: [
+          "Empty then filled room",
+          "Centerpieces, food spread, cake and cupcakes, bar/fountain, dance floor, chandeliers, pillars, ceiling, sweetheart table",
+          "First dance VIDEO (True), father-daughter VIDEO (My Girl), couples dancing",
+        ],
+      },
+      {
+        id: "t315",
+        time: "3:15",
+        blurb: "Dinner",
+        cams: ["reception"],
+        shots: [
+          "Family/couples at every table, smile for the bride and groom",
+          "Candid reception, wedding party and guests, whole family",
+          "Bouquet toss right after dinner, then private cake cutting",
+        ],
+      },
+      {
+        id: "t4",
+        time: "4:00–4:30",
+        blurb: "Pool",
+        cams: ["pool"],
+        shots: ["Pool party: people swimming and socializing"],
+      },
+      {
+        id: "t630",
+        time: "6:30–7:00",
+        blurb: "Golden hour",
+        cams: ["ceremony", "pool"],
+        shots: [
+          "Last portraits (couple)",
+          "Smores bar / firepit",
+          "Drone of venue with everyone at the pool and ceremony",
+        ],
+      },
+    ];
+
+    const map = L.map("map", {
+      dragging: false,
+      zoomControl: false,
+      touchZoom: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      attributionControl: false,
+      closePopupOnClick: false,
+      zoomSnap: 1,
+      minZoom: 18,
+      maxZoom: 18,
+    }).setView([43.11124, -123.37774], 18);
+
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      { maxZoom: 19, maxNativeZoom: 19 }
+    ).addTo(map);
+
+    PLACES.forEach((place) => {
+      const probe = document.createElement("span");
+      probe.className = "place";
+      probe.textContent = place.label;
+      probe.style.position = "absolute";
+      probe.style.visibility = "hidden";
+      document.body.appendChild(probe);
+      const w = Math.ceil(probe.offsetWidth);
+      const h = Math.ceil(probe.offsetHeight);
+      document.body.removeChild(probe);
+      const extra = place.id === "reception" ? " place-sm" : "";
+      L.marker(P[place.id], {
+        interactive: false,
+        keyboard: false,
+        icon: L.divIcon({
+          className: "place-wrap",
+          html: '<span class="place' + extra + '">' + place.label + "</span>",
+          iconSize: [w, h],
+          iconAnchor: [Math.round(w / 2), Math.round(h / 2)],
+        }),
+      }).addTo(map);
+    });
+
+    const layer = L.layerGroup().addTo(map);
+
+    const PAD = {
+      ceremony: [-0.0001, 0],
+      grooms: [-0.0001, 0],
+      bride: [-0.0001, 0],
+      firstLook: [-0.000028, 0],
+      reception: [-0.00012, 0],
+      pool: [0, 0],
+    };
+
+    function pos(at, i, n) {
+      const base = P[at];
+      const pad = PAD[at] || [0, 0];
+      const origin = [base[0] + pad[0], base[1] + pad[1]];
+      const spread = n <= 2 ? 0.000055 : 0.000046;
+      return [origin[0], origin[1] + (i - (n - 1) / 2) * spread];
+    }
+
+    function markCam(ll) {
+      return L.marker(ll, {
+        interactive: false,
+        keyboard: false,
+        icon: L.divIcon({
+          className: "icon-wrap",
+          html: cameraSvg(48),
+          iconSize: [48, 48],
+          iconAnchor: [24, 24],
+        }),
+      });
+    }
+
+    function bullets(slot) {
+      document.getElementById("who").innerHTML =
+        '<div class="when">' +
+        slot.time +
+        '</div><div class="n">' +
+        slot.blurb +
+        "</div><ul>" +
+        slot.shots.map((s) => "<li>" + s + "</li>").join("") +
+        "</ul>";
+    }
+
+    function show(slot) {
+      layer.clearLayers();
+      slot.cams.forEach((at, i) => markCam(pos(at, i, slot.cams.length)).addTo(layer));
+      document.querySelectorAll(".tabs button").forEach((b) =>
+        b.classList.toggle("on", b.dataset.id === slot.id)
+      );
+      bullets(slot);
+      const box = document.getElementById("who");
+      const btn = document.querySelector('.tabs button[data-id="' + slot.id + '"]');
+      if (box && btn) btn.after(box);
+      if (history.replaceState) history.replaceState(null, "", "#" + slot.id);
+    }
+
+    const ul = document.getElementById("times");
+    SLOTS.forEach((s) => {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      b.dataset.id = s.id;
+      b.innerHTML =
+        '<span class="t">' + s.time + '</span><span class="n">' + s.blurb.split(" · ")[0] + "</span>";
+      b.onclick = function () {
+        show(s);
+      };
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+
+    const legend = document.getElementById("legend");
+    [["Tiana"], ["Second"]].forEach(([name]) => {
+      const span = document.createElement("span");
+      span.innerHTML = cameraSvg(24) + name;
+      legend.appendChild(span);
+    });
+
+    const start = SLOTS.find((s) => s.id === location.hash.slice(1)) || SLOTS[0];
+    show(start);
+
+    function lockFrame() {
+      map.invalidateSize();
+      map.fitBounds(L.latLngBounds([P.ceremony, P.grooms, P.bride, P.firstLook, P.reception, P.pool]), {
+        padding: [8, 8],
+        maxZoom: 18,
+        animate: false,
+      });
+    }
+
+    setTimeout(lockFrame, 200);
+    window.addEventListener("resize", function () {
+      map.invalidateSize();
+    });
+  </script>
 </body>
 </html>
