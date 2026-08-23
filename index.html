@@ -3,112 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SunLine X1™ — Solar-Powered Eco Dryer</title>
-  <meta name="description" content="A simple, effective way to harness the sun's power for your laundry. Zero electricity. All sunshine." />
-  <link rel="stylesheet" href="style.css" />
+  <title>Don — Pages</title>
+  <meta name="description" content="Personal GitHub Pages for Don Hubbard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #12151a;
+      --paper: #e8ebe4;
+      --muted: #6d7568;
+      --line: rgba(18, 21, 26, 0.12);
+      --accent: #2f6b4f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      color: var(--ink);
+      font-family: Figtree, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 12% -10%, rgba(47, 107, 79, 0.18), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(90, 110, 70, 0.12), transparent 50%),
+        linear-gradient(180deg, #f3f5f0 0%, var(--paper) 45%, #dfe4d8 100%);
+    }
+
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: clamp(3.5rem, 12vw, 7rem) 1.5rem 4rem;
+    }
+
+    .brand {
+      font-family: Fraunces, Georgia, serif;
+      font-size: clamp(3.2rem, 12vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      margin: 0 0 0.75rem;
+      animation: rise 0.7s ease both;
+    }
+
+    .lede {
+      margin: 0 0 2.75rem;
+      max-width: 28ch;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.5;
+      animation: rise 0.7s ease 0.08s both;
+    }
+
+    nav {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+      animation: rise 0.7s ease 0.16s both;
+    }
+
+    a.item {
+      display: grid;
+      gap: 0.2rem;
+      padding: 1.15rem 0;
+      border-bottom: 1px solid var(--line);
+      color: inherit;
+      text-decoration: none;
+      transition: padding-left 0.2s ease, color 0.2s ease;
+    }
+
+    a.item:hover,
+    a.item:focus-visible {
+      color: var(--accent);
+      padding-left: 0.4rem;
+      outline: none;
+    }
+
+    .name {
+      font-family: Fraunces, Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    a.item:hover .desc,
+    a.item:focus-visible .desc {
+      color: inherit;
+      opacity: 0.75;
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      animation: rise 0.7s ease 0.24s both;
+    }
+
+    footer a { color: inherit; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <div class="marquee"><span>☀️ 100% SOLAR POWERED • ZERO ELECTRICITY • SHIPS IN 6–8 WEEKS • SIMPLE &amp; EFFECTIVE ☀️</span></div>
-
-  <nav class="nav">
-    <a class="logo" href="index.html">☀️ SunLine</a>
-    <div class="links">
-      <a href="index.html" class="active">Product</a>
-      <a href="about.html">Our Mission</a>
-      <a href="order.html" class="btn-nav">Order Now</a>
-    </div>
-  </nav>
-
   <main>
-    <section class="hero">
-      <div class="hero-text">
-        <p class="badge">SunLine X1™ · Solar Drying Technology</p>
-        <h1>A Simple, Effective Way to<br><span class="glow">Harness the Sun</span></h1>
-        <p class="lead">
-          The SunLine X1™ uses natural sunlight and airflow to dry your clothes —
-          no plug, no gas bill, no complicated machinery. Just a smarter way to
-          let the sun do what it's already doing for free.
-        </p>
-        <div class="price-row">
-          <span class="price">$299</span>
-          <span class="price-note">Free shipping · Arrives in 6–8 weeks</span>
-        </div>
-        <div class="actions">
-          <a class="btn primary large" href="order.html">Order Now</a>
-          <button class="btn" id="reality-toggle" type="button">View Kit Contents</button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img id="product-img" src="images/solar-dryer-hero.svg" alt="SunLine X1 solar dryer outdoors in sunlight" />
-        <p id="img-caption" class="img-caption">SunLine X1™ — Designed for outdoor solar drying</p>
-      </div>
-    </section>
-
-    <section class="stats">
-      <div class="stat"><strong>0W</strong><span>Power Draw</span></div>
-      <div class="stat"><strong>100%</strong><span>Solar Powered</span></div>
-      <div class="stat"><strong>6–8</strong><span>Weeks to Deliver</span></div>
-      <div class="stat"><strong>All</strong><span>Included in Kit</span></div>
-    </section>
-
-    <section class="page">
-      <h2>How It Works</h2>
-      <div class="steps">
-        <article class="card step">
-          <span class="step-num">1</span>
-          <h3>Position</h3>
-          <p>Set up your SunLine system in a sunny outdoor space with good airflow.</p>
-        </article>
-        <article class="card step">
-          <span class="step-num">2</span>
-          <h3>Hang</h3>
-          <p>Spread garments along the line so sunlight and warm air can reach every fabric.</p>
-        </article>
-        <article class="card step">
-          <span class="step-num">3</span>
-          <h3>Dry</h3>
-          <p>Let the sun naturally evaporate moisture. Simple, quiet, and effective.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="page reveal-section">
-      <h2>The Product &amp; Packaging</h2>
-      <p class="lead center">Premium presentation. Straightforward engineering.</p>
-      <div class="compare">
-        <figure class="card compare-card">
-          <img src="images/solar-dryer-box.svg" alt="SunLine retail packaging" />
-          <figcaption><strong>Retail Box</strong> — White finish with gloss black glass-style panels</figcaption>
-        </figure>
-        <figure class="card compare-card">
-          <img src="images/solar-dryer-kit.svg" alt="Complete kit contents" />
-          <figcaption><strong>Complete Kit</strong> — Everything you need to get started</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section class="page">
-      <h2>What's In The Box</h2>
-      <ul class="specs">
-        <li>☀️ 1× SunLine X1™ drying frame (flat-pack assembly)</li>
-        <li>🧵 1× High-tensile drying line with spool</li>
-        <li>🪵 2× Support poles for outdoor setup</li>
-        <li>📋 1× Illustrated setup guide</li>
-        <li>📦 1× Premium retail box — white body, gloss black glass-style front &amp; top</li>
-      </ul>
-      <p class="fine center">Everything you'll need should arrive within 6 to 8 weeks of your initial order.</p>
-    </section>
-
-    <section class="cta-banner">
-      <h2>Ready to dry with sunlight?</h2>
-      <p>Join households choosing a simpler path to clean, fresh laundry.</p>
-      <a class="btn primary large" href="order.html">Order SunLine X1™ — $299</a>
-    </section>
+    <h1 class="brand">Don</h1>
+    <p class="lede">Personal pages — wedding day boards, Core Forge, and a solar-dryer demo.</p>
+    <nav aria-label="Projects">
+      <a class="item" href="aug22.html">
+        <span class="name">Aug 22 day board</span>
+        <span class="desc">Concord Estate schedule map — who is where</span>
+      </a>
+      <a class="item" href="photo.html">
+        <span class="name">Photographer board</span>
+        <span class="desc">Shot list by time for Aug 22</span>
+      </a>
+      <a class="item" href="coreforge/">
+        <span class="name">Core Forge</span>
+        <span class="desc">Follow-along ab training app</span>
+      </a>
+      <a class="item" href="sunline/">
+        <span class="name">SunLine X1</span>
+        <span class="desc">Solar dryer product demo</span>
+      </a>
+    </nav>
+    <footer>
+      <p>© <span id="year"></span> · <a href="https://github.com/jetfan12345-hue/jetfan12345-hue.github.io">Source</a></p>
+    </footer>
   </main>
-
-  <footer>
-    <p>© <span id="year"></span> SunLine Technologies™ · <a href="https://github.com/jetfan12345-hue/jetfan12345-hue.github.io">Source</a></p>
-  </footer>
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("year").textContent = String(new Date().getFullYear());
+  </script>
 </body>
 </html>
